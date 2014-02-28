@@ -121,7 +121,6 @@ void QSPCallback::showMenu()
 void QSPCallback::showMessage(const QSP_CHAR *str)
 {
     qDebug() << "showMessage(), str: " << QString::fromWCharArray(str);
-    qspWin->showMessage(QString::fromWCharArray(str));
     qspWin->builder.showMessage(QString::fromWCharArray(str));
 }
 

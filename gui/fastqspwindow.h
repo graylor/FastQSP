@@ -13,7 +13,6 @@
 #include <QWebView>
 #include <QWebFrame>
 #include <QString>
-#include <QStringRef>
 #include <QRegExp>
 #include <QDebug>
 #include <QGridLayout>
@@ -21,7 +20,6 @@
 #include <Phonon/MediaObject>
 #include <Phonon/AudioOutput>
 #include <QFontDatabase>
-#include <QElapsedTimer>
 
 class FastQSPWindow : public QMainWindow
 {
@@ -33,8 +31,6 @@ public:
     void playAudio(QString filename, int vol);
     void stopAudio();
     void refreshView();
-    void showMessage(const QString &text);
-    void hideMessage();
     QSP_HTMLBuilder builder;
 signals:
 
@@ -62,18 +58,11 @@ private:
     uint gameHeight;
     qreal scaleFactor;
     qreal aspectRatio;
-    bool messageVisible;
-    QString messageText;
     Phonon::MediaObject *media;
     Phonon::AudioOutput *audioOutput;
     void loadFonts();
     void loadPage();
     void loadStyle();
-    void loadActions();
-    void loadObjects(QString & objectsDesc, QString & objectsStyle);
-    void loadMainHead(QString & mainHead, const QString & additionalStyle = "");
-    void loadMainDesc(QString & mainDesc, const QString & additionalDesc = "");
-    void loadMessage(QString & messageDesc, QString & messageStyle);
     void relPathsToURLs(QString & stylesheet);
     QString toUrlPath(QString &path);
 };
