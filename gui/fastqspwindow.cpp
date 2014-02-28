@@ -105,6 +105,7 @@ FastQSPWindow::~FastQSPWindow()
 
 bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
 {
+    QMainWindow::eventFilter(obj, e);
     if(e->type() == QEvent::MouseButtonPress)
     {
         if(((QMouseEvent *)e)->button() != Qt::LeftButton)
@@ -176,7 +177,6 @@ void FastQSPWindow::loadGame()
         QSPOpenSavedGame(filename.toStdWString().c_str(), true))
     {
         loadPage();
-        //mainView->resize(gameWidth, gameHeight);
     }
 }
 
@@ -203,14 +203,14 @@ void FastQSPWindow::showCss()
 
 void FastQSPWindow::linkClicked(const QUrl & url)
 {
-    if(url.toString().startsWith("exec:", Qt::CaseInsensitive))
+    if(url.toString().startsWith(QLatin1String("exec:"), Qt::CaseInsensitive))
     {
         QString execStr;
         execStr = url.toString().remove(0, 5).trimmed().replace("%22", "\"");
         QSPExecString(execStr.toStdWString().c_str(), true);
     }
     else
-    if(url.toString().startsWith("obj:", Qt::CaseInsensitive))
+    if(url.toString().startsWith(QLatin1String("obj:"), Qt::CaseInsensitive))
     {
         bool ok = false;
         int number = 0;
@@ -223,7 +223,7 @@ void FastQSPWindow::linkClicked(const QUrl & url)
         QSPSetSelObjectIndex(number, true);
     }
     else
-    if(url.toString() == "msgclose")
+    if(url.toString() == QLatin1String("msgclose"))
     {
         builder.hideMessage();
     }
@@ -275,6 +275,7 @@ void FastQSPWindow::openFile(const QString &filename)
 }
 
 // That function is called by callback if isRefsresh == true
+// according to the debug log that never happens. maybe I should remove it?
 void FastQSPWindow::refreshView()
 {
     qDebug() << "refreshView()";
@@ -310,25 +311,7 @@ void FastQSPWindow::loadStyle()
     // NOTE: only background-image property supportedre
     relPathsToURLs(stylesheet);
 
-    // HACK: Because AeroQSP ignore '%'
-    // TODO: Add settings option
-    // stylesheet.replace("%", "");
-
     mainView->page()->settings()->setUserStyleSheetUrl(QString("data:text/css;charset=utf-8;base64," + stylesheet.toUtf8().toBase64()));
-
-    /*if(QSPGetVarValues(L"STYLESHEET", 0, &numVal, &strVal))
-    {
-        stylesheet = QString::fromWCharArray(strVal);
-
-
-
-
-        pageCSS->write(stylesheet.toUtf8());
-        pageCSS->close();
-        //mainView->page()->settings()->setUserStyleSheetUrl("file:///" + pageCSS->fileName());
-        mainView->page()->settings()->setUserStyleSheetUrl(QString("data:text/css;charset=utf-8;base64," + stylesheet.toUtf8().toBase64()));
-        qDebug() << "css file is: file:///" + pageCSS->fileName();
-    }*/
 }
 
 void FastQSPWindow::loadPage()
@@ -372,5 +355,6 @@ QString FastQSPWindow::toUrlPath(QString &path)
 
 void FastQSPWindow::timerEvent(QTimerEvent *event)
 {
+    QMainWindow::timerEvent(event);
     QSPExecCounter(true);
 }
