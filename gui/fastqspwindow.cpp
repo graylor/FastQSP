@@ -225,7 +225,10 @@ void FastQSPWindow::linkClicked(const QUrl & url)
     }
     else
     if(url.toString() == "msgclose")
+    {
         hideMessage();
+        builder.hideMessage();
+    }
     else
     {
         bool ok = false;
@@ -267,6 +270,7 @@ void FastQSPWindow::openFile(const QString &filename)
     {
         gameMenu->setEnabled(true);
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
+        builder.setGameDir(gameDirectory);
         loadFonts();
         loadPage();
     }
@@ -580,6 +584,7 @@ void FastQSPWindow::loadMainDesc(QString & mainDesc, const QString & additionalD
 
     // NOTE: all resources must be in content folder
     // TODO: make normal path replacement
+    // Dirty hacks for AeroQsp compability
     mainDesc = mainDesc.replace('\\', '/');
     mainDesc = mainDesc.replace("content/", "file:///" + gameDirectory + "content/");
     mainDesc = mainDesc.replace("\r\n", "\r\n<br>");
@@ -588,6 +593,13 @@ void FastQSPWindow::loadMainDesc(QString & mainDesc, const QString & additionalD
 
 void FastQSPWindow::loadPage()
 {
+    QElapsedTimer myTimer;
+    myTimer.start();
+    QString res2 = builder.getHTML();
+    int time2 = myTimer.nsecsElapsed();
+    qDebug() << "new builder" << time2;
+
+    myTimer.start();
     // Load actions
     //loadActions();
 
@@ -608,9 +620,13 @@ void FastQSPWindow::loadPage()
     QString mainDesc;
     loadMainDesc(mainDesc, objectsDesc + messageDesc);
 
-    //if(isFullScreen())
+    QString res1 = mainHead + "<body  ondragstart='return false;' ondrop='return false;'>" + mainDesc + "</body>";
+    int time1 = myTimer.nsecsElapsed();
+    qDebug() << "old builder" << time1;
 
-    mainView->setHtml(mainHead + "<body  ondragstart='return false;' ondrop='return false;'>" + mainDesc + "</body>");
+
+    mainView->setHtml(res2);
+
 
     // Load external stylesheet
     // TODO: Must check that css unchanged. Maybe save stylesheet hash?

@@ -48,7 +48,7 @@ QString QSP_HTMLBuilder::getHTML()
             QLatin1String("<body>") %
             main %
             objects %
-            message %
+            message.replace(QLatin1String("%TEXT%"), messageText) %
             actions %
             QLatin1String("</body>") ;
 }
@@ -99,7 +99,7 @@ void QSP_HTMLBuilder::updateMessage()
             getIntegerVariable(L"MSG_Y") %
             QLatin1String(";left:") %
             getIntegerVariable(L"MSG_X") %
-            QLatin1String(";'><div style='position:absolute;top:") %
+            QLatin1String(";'><div style='white-space:pre-wrap;position:absolute;top:") %
             getIntegerVariable(L"MSG_TEXT_Y") %
             QLatin1String(";left:") %
             getIntegerVariable(L"MSG_TEXT_X") %
@@ -134,7 +134,7 @@ void QSP_HTMLBuilder::updateObjects()
 
     int numberOfObjects = 0;
     numberOfObjects = QSPGetObjectsCount();
-    for(uint ind = 0; ind < numberOfObjects; ++ind)
+    for(int ind = 0; ind < numberOfObjects; ++ind)
     {
         // Tmp vars
         wchar_t *imgPath = NULL;
@@ -198,8 +198,9 @@ void QSP_HTMLBuilder::updateMainDesc()
                          QLatin1String("content"));
 }
 
-void QSP_HTMLBuilder::showMessage()
+void QSP_HTMLBuilder::showMessage(const QString text)
 {
+    messageText = text;
     messageVisible = true;
 }
 

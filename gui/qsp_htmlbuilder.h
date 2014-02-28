@@ -19,7 +19,7 @@ public:
     void updateObjects();
     void updateMessage();
     void updateActions();
-    void showMessage();
+    void showMessage(const QString text);
     void hideMessage();
 
 private:
@@ -30,6 +30,7 @@ private:
     QString objects;
     QString message;
     bool messageVisible;
+    QString messageText;
     QString actions;
     QHash<QString, int> defaultIntegerValues;
     //Cached values

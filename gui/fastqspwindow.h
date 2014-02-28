@@ -2,6 +2,7 @@
 #define QSPVIEW_H
 
 #include "qsp_default.h"
+#include "qsp_htmlbuilder.h"
 
 #include <QMainWindow>
 #include <QResizeEvent>
@@ -20,6 +21,7 @@
 #include <Phonon/MediaObject>
 #include <Phonon/AudioOutput>
 #include <QFontDatabase>
+#include <QElapsedTimer>
 
 class FastQSPWindow : public QMainWindow
 {
@@ -33,6 +35,7 @@ public:
     void refreshView();
     void showMessage(const QString &text);
     void hideMessage();
+    QSP_HTMLBuilder builder;
 signals:
 
 public slots:
