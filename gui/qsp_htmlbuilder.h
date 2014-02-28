@@ -32,10 +32,12 @@ private:
     bool messageVisible;
     QString actions;
     QHash<QString, int> defaultIntegerValues;
+    //Cached values
+    QString mainDesc;
 
     const QString getStringVariable(const wchar_t *name) const;
     const QString getIntegerVariable(const wchar_t *name) const;
-    const QString getMainDesc() const;
+    void updateMainDesc();
 };
 
 #endif // QSP_HTMLBUILDER_H

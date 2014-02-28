@@ -73,6 +73,7 @@ void QSP_HTMLBuilder::updateScripts()
 
 void QSP_HTMLBuilder::updateMain()
 {
+    updateMainDesc();
     main = QLatin1Literal("<div style='position:fixed;top:") %
             getIntegerVariable(L"MAINDESC_Y") %
             QLatin1Literal(";left:") %
@@ -82,7 +83,7 @@ void QSP_HTMLBuilder::updateMain()
             QLatin1Literal(";height:") %
             getIntegerVariable(L"MAINDESC_H") %
             QLatin1Literal(";'>") %
-            getMainDesc() %
+            mainDesc %
             QLatin1Literal("</div>");
 }
 
@@ -119,6 +120,8 @@ void QSP_HTMLBuilder::updateMessage()
 
 void QSP_HTMLBuilder::updateObjects()
 {
+    if(!QSPIsObjectsChanged())
+        return;
     objects = QLatin1String("<div style='top:") %
             getIntegerVariable(L"OBJECTS_Y") %
             QLatin1String(";left:") %
@@ -186,10 +189,13 @@ const QString QSP_HTMLBuilder::getIntegerVariable(const wchar_t *name) const
         return QString::number(defaultIntegerValues[QString::fromWCharArray(name)]);
 }
 
-const QString QSP_HTMLBuilder::getMainDesc() const
+void QSP_HTMLBuilder::updateMainDesc()
 {
-    return QString::fromWCharArray(QSPGetMainDesc()).replace("\n", "\n<br/>")
-            .replace("content", QLatin1String("file:///") % directory % QLatin1String("content"));
+    if(QSPIsMainDescChanged())
+        mainDesc = QString::fromWCharArray(QSPGetMainDesc()).replace("\n", "\n<br/>")
+                .replace("content", QLatin1String("file:///") %
+                         directory %
+                         QLatin1String("content"));
 }
 
 void QSP_HTMLBuilder::showMessage()
