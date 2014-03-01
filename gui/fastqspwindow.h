@@ -47,7 +47,6 @@ private slots:
     void openFileDialog();
     void about();
     void showHtml();
-    void showCss();
     void saveGame();
     void loadGame();
     void linkClicked(const QUrl & url);

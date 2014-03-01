@@ -62,16 +62,10 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     menuBar()->addMenu(gameMenu);
     gameMenu->setDisabled(true);
 
-
-    QMenu* debugMenu = new QMenu("Debug");
-    debugMenu->addAction("Show html",
+    QMenu* helpMenu = new QMenu("Help");
+    helpMenu->addAction("Show html",
                     this,
                     SLOT(showHtml()));
-    debugMenu->addAction("Show css",
-                    this,
-                    SLOT(showCss()));
-
-    QMenu* helpMenu = new QMenu("Help");
     helpMenu->addAction("About",
                     this,
                     SLOT(about()));
@@ -192,18 +186,6 @@ void FastQSPWindow::showHtml()
         htmlText = new QTextEdit();
     htmlText->setPlainText(mainView->page()->mainFrame()->toHtml());
     htmlText->show();
-}
-
-void FastQSPWindow::showCss()
-{
-    static QTextEdit *cssText;
-    if(!cssText)
-        cssText = new QTextEdit();
-    int numVal;
-    wchar_t *strVal;
-    QSPGetVarValues(L"STYLESHEET", 0, &numVal, &strVal);
-    cssText->setPlainText(QString::fromWCharArray(strVal));
-    cssText->show();
 }
 
 void FastQSPWindow::linkClicked(const QUrl & url)
