@@ -48,7 +48,7 @@ QString QSP_HTMLBuilder::getHTML()
             QLatin1String("<style>") %
             baseStyle %
             QLatin1String("</style></head>") %
-            QLatin1String("<body>") %
+            QLatin1String("<body onmousedown='return false'>") %
             main %
             objects %
             message.replace(QLatin1String("%TEXT%"), messageText) %
@@ -214,11 +214,9 @@ void QSP_HTMLBuilder::updateStyle()
     }
     delete re;
 
-    qDebug() << stylesheet;
     stylesheet = QLatin1String("<link rel='stylesheet' type='text/css' href='data:text/css;charset=utf-8;base64,") +
             stylesheet.toUtf8().toBase64() %
             QLatin1String("'>");
-    qDebug() << stylesheet;
 }
 
 void QSP_HTMLBuilder::updateMainDesc()
