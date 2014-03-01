@@ -60,7 +60,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
                     SLOT(loadGame()),
                     Qt::CTRL + Qt::Key_L);
     menuBar()->addMenu(gameMenu);
-    gameMenu->setDisabled(true);
+    //gameMenu->setDisabled(true);
 
     QMenu* helpMenu = new QMenu("Help");
     helpMenu->addAction("Show html",
@@ -143,8 +143,7 @@ void FastQSPWindow::about()
 
 void FastQSPWindow::openFileDialog()
 {
-    QFileDialog dlg;
-    QString filename = dlg.getOpenFileName(
+    QString filename = QFileDialog::getOpenFileName(
                 this,
                 "Open File",
                 NULL,
@@ -253,7 +252,7 @@ void FastQSPWindow::openFile(const QString &filename)
         qCritical() << QString("Could not open file: ") << filename;
     if(QSPRestartGame(QSP_TRUE))
     {
-        gameMenu->setEnabled(true);
+        //gameMenu->setEnabled(true);
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
         builder.setGameDir(gameDirectory);
         loadFonts();

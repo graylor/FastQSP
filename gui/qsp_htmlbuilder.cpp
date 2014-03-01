@@ -22,8 +22,6 @@ QSP_HTMLBuilder::QSP_HTMLBuilder()
     defaultIntegerValues["MSG_TEXT_H"] = 231;
     defaultIntegerValues["MSG_OK_X"] = 186;
     defaultIntegerValues["MSG_OK_Y"] = 239;
-
-    messageVisible = false;
 }
 
 void QSP_HTMLBuilder::setGameDir(const QString dir)
@@ -51,7 +49,7 @@ QString QSP_HTMLBuilder::getHTML()
             QLatin1String("<body onmousedown='return false'>") %
             main %
             objects %
-            message.replace(QLatin1String("%TEXT%"), messageText) %
+            (messageTexts.isEmpty()?"":message.replace(QLatin1String("%TEXT%"), messageTexts.first())) %
             actions %
             QLatin1String("</body>") ;
 }
@@ -59,7 +57,9 @@ QString QSP_HTMLBuilder::getHTML()
 void QSP_HTMLBuilder::updateBaseStyle()
 {
     baseStyle =
-            QLatin1String("*{padding:0;margin:0;} a{text-decoration:none;outline:0;} body{-webkit-user-select:none;cursor:default;background-size:cover;background: url('") %
+            QLatin1String("*{padding:0;margin:0;} a{text-decoration:none;outline:0;") %
+            (messageTexts.empty()?QLatin1String(""):QLatin1String("pointer-events: none;cursor: default;")) %
+            ("} body{white-space: pre-wrap;-webkit-user-select:none;cursor:default;background-size:cover;background: url('") %
             getStringVariable(L"BACKIMAGE") %
             QLatin1String("')no-repeat;font-family:") %
             getStringVariable(L"FNAME") %
@@ -93,7 +93,7 @@ void QSP_HTMLBuilder::updateMain()
 void QSP_HTMLBuilder::updateMessage()
 {
     QString vis = QLatin1String("visibility:") +
-            (messageVisible?QLatin1String("visible"):QLatin1String("hidden"));
+            (messageTexts.empty()?QLatin1String("hidden"):QLatin1String("visible"));
     message = QLatin1String("<div id='__message__' style='") %
             vis %
             QLatin1String(";background-image:url(\"") %
@@ -112,7 +112,7 @@ void QSP_HTMLBuilder::updateMessage()
             getIntegerVariable(L"MSG_TEXT_H") %
             QLatin1String(";'>") %
             getStringVariable(L"MSG_FORMAT") %
-            QLatin1String("</div><a href='msgclose'><img src='") %
+            QLatin1String("</div><a href='msgclose' style='pointer-events:auto;cursor:pointer;'><img src='") %
             getStringVariable(L"MSG_OK_IMAGE") %
             QLatin1String("' style='position:absolute;top:") %
             getIntegerVariable(L"MSG_OK_Y") %
@@ -195,6 +195,7 @@ const QString QSP_HTMLBuilder::getIntegerVariable(const wchar_t *name) const
 void QSP_HTMLBuilder::updateStyle()
 {
     stylesheet = getStringVariable(L"STYLESHEET");
+    stylesheet = stylesheet.replace("%","");
     QRegExp *re = new QRegExp(
                 "background-image:(.*);",
                 Qt::CaseInsensitive);
@@ -222,7 +223,8 @@ void QSP_HTMLBuilder::updateStyle()
 void QSP_HTMLBuilder::updateMainDesc()
 {
     if(QSPIsMainDescChanged())
-        mainDesc = QString::fromWCharArray(QSPGetMainDesc()).replace("\n", "\n<br/>")
+        mainDesc = QString::fromWCharArray(QSPGetMainDesc())
+                .replace("\r\n", "<br>")
                 .replace("content", QLatin1String("file:///") %
                          directory %
                          QLatin1String("content"));
@@ -230,11 +232,10 @@ void QSP_HTMLBuilder::updateMainDesc()
 
 void QSP_HTMLBuilder::showMessage(const QString text)
 {
-    messageText = text;
-    messageVisible = true;
+    messageTexts.enqueue(text);
 }
 
 void QSP_HTMLBuilder::hideMessage()
 {
-    messageVisible = false;
+    messageTexts.dequeue();
 }

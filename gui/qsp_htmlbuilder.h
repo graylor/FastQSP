@@ -6,6 +6,7 @@
 #include <QStringBuilder>
 #include <QString>
 #include <QHash>
+#include <QQueue>
 #include <QRegExp>
 #include <QDebug>
 
@@ -33,8 +34,7 @@ private:
     QString main;
     QString objects;
     QString message;
-    bool messageVisible;
-    QString messageText;
+    QQueue<QString> messageTexts;
     QString actions;
     QHash<QString, int> defaultIntegerValues;
     //Cached values
