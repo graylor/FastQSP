@@ -20,6 +20,7 @@
 #include <Phonon/MediaObject>
 #include <Phonon/AudioOutput>
 #include <QFontDatabase>
+#include <QLabel>
 
 class FastQSPWindow : public QMainWindow
 {
@@ -44,6 +45,7 @@ protected:
 
 private slots:
     void openFileDialog();
+    void about();
     void showHtml();
     void showCss();
     void saveGame();

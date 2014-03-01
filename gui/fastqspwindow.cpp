@@ -71,7 +71,12 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
                     this,
                     SLOT(showCss()));
 
-    menuBar()->addMenu(debugMenu);
+    QMenu* helpMenu = new QMenu("Help");
+    helpMenu->addAction("About",
+                    this,
+                    SLOT(about()));
+
+    menuBar()->addMenu(helpMenu);
 
     // Initializing QSP
     QSPInit();
@@ -132,6 +137,14 @@ void FastQSPWindow::keyPressEvent(QKeyEvent *e)
             qDebug() << "fullscreen";
         }
     }
+}
+
+void FastQSPWindow::about()
+{
+    QLabel *about = new QLabel;
+    about->setText("<h2>FastQSP player v0.3</h2><table><tr><td>Author:</td> <td>Graylor[graylor@yandex.ru]</td></tr><tr><td>Page:</td> <td><a href='https://github.com/graylor/FastQSP'>https://github.com/graylor/FastQSP</a></td></tr><tr><td>License:</td> <td>GPL v3</td></tr>");
+    about->setFixedSize(250,90);
+    about->show();
 }
 
 void FastQSPWindow::openFileDialog()
