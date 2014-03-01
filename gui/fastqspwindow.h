@@ -58,15 +58,12 @@ private:
     QString gameDirectory;
     uint gameWidth;
     uint gameHeight;
-    qreal scaleFactor;
     qreal aspectRatio;
+    qreal scaleFactor;
     Phonon::MediaObject *media;
     Phonon::AudioOutput *audioOutput;
     void loadFonts();
     void loadPage();
-    void loadStyle();
-    void relPathsToURLs(QString & stylesheet);
-    QString toUrlPath(QString &path);
 };
 
 #endif // QSPVIEW_H

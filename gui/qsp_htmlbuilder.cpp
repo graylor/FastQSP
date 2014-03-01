@@ -34,14 +34,17 @@ void QSP_HTMLBuilder::setGameDir(const QString dir)
 QString QSP_HTMLBuilder::getHTML()
 {
     updateBaseStyle();
+    updateStyle();
     updateScripts();
     updateMain();
     updateMessage();
     updateObjects();
     updateActions();
+    qDebug() << stylesheet;
     return QLatin1String("<head><script type='text/javascript'>") %
             scripts %
             QLatin1String("</script>") %
+            stylesheet %
             QLatin1String("<style>") %
             baseStyle %
             QLatin1String("</style></head>") %
@@ -187,6 +190,35 @@ const QString QSP_HTMLBuilder::getIntegerVariable(const wchar_t *name) const
         return QString::number(numVal);
     else
         return QString::number(defaultIntegerValues[QString::fromWCharArray(name)]);
+}
+
+void QSP_HTMLBuilder::updateStyle()
+{
+    stylesheet = getStringVariable(L"STYLESHEET");
+    QRegExp *re = new QRegExp(
+                "background-image:(.*);",
+                Qt::CaseInsensitive);
+    re->setMinimal(true);
+    int pos = 0;
+    while((pos = re->indexIn(stylesheet, pos)) > 0)
+    {
+        QString url = re->cap(1).replace('\\', '/').replace("content",
+                                                            QLatin1String("file:///") %
+                                                            directory %
+                                                            QLatin1String("content"));
+
+        stylesheet = stylesheet.replace(pos, re->matchedLength(),
+                                        QLatin1String("background-image:url('") +
+                                        url + "');");
+        pos += re->matchedLength();
+    }
+    delete re;
+
+    qDebug() << stylesheet;
+    stylesheet = QLatin1String("<link rel='stylesheet' type='text/css' href='data:text/css;charset=utf-8;base64,") +
+            stylesheet.toUtf8().toBase64() %
+            QLatin1String("'>");
+    qDebug() << stylesheet;
 }
 
 void QSP_HTMLBuilder::updateMainDesc()

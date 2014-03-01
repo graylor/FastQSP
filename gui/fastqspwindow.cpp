@@ -310,46 +310,9 @@ void FastQSPWindow::refreshView()
     qDebug() << "refreshView()";
 }
 
-void FastQSPWindow::relPathsToURLs(QString & stylesheet)
-{
-    QRegExp *re = new QRegExp(
-                "background-image:(.*);",
-                Qt::CaseInsensitive);
-    re->setMinimal(true);
-    int pos = 0;
-    while((pos = re->indexIn(stylesheet, pos)) > 0)
-    {
-        QString url = re->cap(1);
-        stylesheet = stylesheet.replace(pos, re->matchedLength(), "background-image:url('" + toUrlPath(url) + "');");
-        pos += re->matchedLength();
-    }
-    delete re;
-}
-
-// Load page stylesheet
-void FastQSPWindow::loadStyle()
-{
-    // Temp variables
-    int numVal = 0;
-    wchar_t *strVal = NULL;
-
-    QString stylesheet;
-    QSPGetVarValues(L"STYLESHEET", 0, &numVal, &strVal);
-    stylesheet = QString::fromWCharArray(strVal);
-
-    // NOTE: only background-image property supportedre
-    relPathsToURLs(stylesheet);
-
-    mainView->page()->settings()->setUserStyleSheetUrl(QString("data:text/css;charset=utf-8;base64," + stylesheet.toUtf8().toBase64()));
-}
-
 void FastQSPWindow::loadPage()
 {
     mainView->setHtml(builder.getHTML());
-
-    // Load external stylesheet
-    // TODO: Must check that css unchanged. Maybe save stylesheet hash?
-    loadStyle();
 }
 
 // TODO: maximize doesn't work properly
@@ -375,11 +338,6 @@ void FastQSPWindow::resizeEvent(QResizeEvent *event)
         scaleFactor = qreal(viewWidth) / qreal(gameWidth);
         mainView->setZoomFactor(scaleFactor);
     }
-}
-
-QString FastQSPWindow::toUrlPath(QString &path)
-{
-    return "file:///" + gameDirectory + path.replace('\\', '/').trimmed();
 }
 
 void FastQSPWindow::timerEvent(QTimerEvent *event)

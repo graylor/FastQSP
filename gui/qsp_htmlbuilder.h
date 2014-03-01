@@ -6,6 +6,8 @@
 #include <QStringBuilder>
 #include <QString>
 #include <QHash>
+#include <QRegExp>
+#include <QDebug>
 
 class QSP_HTMLBuilder
 {
@@ -19,12 +21,14 @@ public:
     void updateObjects();
     void updateMessage();
     void updateActions();
+    void updateStyle();
     void showMessage(const QString text);
     void hideMessage();
 
 private:
     QString directory;
     QString baseStyle;
+    QString stylesheet;
     QString scripts;
     QString main;
     QString objects;
