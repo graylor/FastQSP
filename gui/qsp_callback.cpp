@@ -176,7 +176,7 @@ void QSPCallback::callInputBox(const QSP_CHAR *text, QSP_CHAR *buffer, int maxLe
              << ", maxLen: " << maxLen;
     QString input;
     input = QInputDialog::getText(qspWin,
-                                  "Окно ввода",
+                                  "",
                                   QString::fromWCharArray(text));
     input.truncate(maxLen);
     wcscpy(buffer, input.toStdWString().c_str());
