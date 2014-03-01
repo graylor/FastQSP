@@ -77,7 +77,7 @@ QSP_BOOL QSPCallback::isPlayingFile(const QSP_CHAR *file)
 
 void QSPCallback::playFile(const QSP_CHAR *file, int volume)
 {
-    qspWin->playAudio(QString::fromWCharArray(file), volume);
+    //qspWin->playAudio(QString::fromWCharArray(file), volume);
     qDebug() << "playFile()"
              << ", file: "      << QString::fromWCharArray(file)
              << ", volume: "    << volume;
@@ -85,7 +85,7 @@ void QSPCallback::playFile(const QSP_CHAR *file, int volume)
 
 void QSPCallback::closeFile(const QSP_CHAR *file)
 {
-    qspWin->stopAudio();
+    //qspWin->stopAudio();
     qDebug() << "closeFile(), file: " << QString::fromWCharArray(file);
 }
 
@@ -96,9 +96,9 @@ void QSPCallback::showImage(const QSP_CHAR *file)
 
 void QSPCallback::showWindow(int type, QSP_BOOL isShow)
 {
-    /*qDebug() << "showWindow()"
+    qDebug() << "showWindow()"
              << ", type: "      << type
-             << ", isShow: "    << isShow;*/
+             << ", isShow: "    << isShow;
 }
 
 void QSPCallback::deleteMenu()
@@ -121,20 +121,20 @@ void QSPCallback::showMenu()
 void QSPCallback::showMessage(const QSP_CHAR *str)
 {
     qDebug() << "showMessage(), str: " << QString::fromWCharArray(str);
-    qspWin->builder.showMessage(QString::fromWCharArray(str));
+    //qspWin->builder.showMessage(QString::fromWCharArray(str));
 }
 
 void QSPCallback::refreshInt(QSP_BOOL isRedraw)
 {
-    // qDebug() << "refreshInt(), isRedraw: " << isRedraw;
-    if(isRedraw)
-        qspWin->refreshView();
+    qDebug() << "refreshInt(), isRedraw: " << isRedraw;
+    //if(isRedraw)
+    //    qspWin->refreshView();
 }
 
 void QSPCallback::setTimer(int msec)
 {
     qDebug() << "setTimer(), msec: " << msec;
-    qspWin->startTimer(msec);
+    //qspWin->startTimer(msec);
 }
 
 void QSPCallback::setInputStrText(const QSP_CHAR *text)
@@ -174,12 +174,12 @@ void QSPCallback::callInputBox(const QSP_CHAR *text, QSP_CHAR *buffer, int maxLe
              << ", text: "   << QString::fromWCharArray(text)
              << ", buffer: " << QString::fromWCharArray(buffer)
              << ", maxLen: " << maxLen;
-    QString input;
+    /*QString input;
     input = QInputDialog::getText(qspWin,
                                   "",
                                   QString::fromWCharArray(text));
     input.truncate(maxLen);
-    wcscpy(buffer, input.toStdWString().c_str());
+    wcscpy(buffer, input.toStdWString().c_str());*/
 }
 
 void QSPCallback::dummy()

@@ -1,4 +1,7 @@
 #include "fastqspwindow.h"
+#include "qsp_default.h"
+#include "qsp_htmlbuilder.h"
+#include "qsp_callback.h"
 #include <QApplication>
 
 FastQSPWindow* qspWin;

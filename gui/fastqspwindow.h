@@ -21,6 +21,9 @@
 #include <Phonon/AudioOutput>
 #include <QFontDatabase>
 #include <QLabel>
+#include <QGraphicsScene>
+#include <QGraphicsWebView>
+#include <QGraphicsView>
 
 class FastQSPWindow : public QMainWindow
 {
@@ -55,6 +58,7 @@ private slots:
 private:
     QMenu* gameMenu;
     QWebView *mainView;
+    QGraphicsWebView *webView;
     QString gameDirectory;
     uint gameWidth;
     uint gameHeight;

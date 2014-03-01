@@ -14,29 +14,12 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     audioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
     Phonon::createPath(media, audioOutput);
 
-    // Creating main view
-    //mainView = new FastQSPView(this);
-    //QGraphicsWidget
-    mainView = new QWebView(this);
-    mainView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-    mainView->setContextMenuPolicy(Qt::NoContextMenu);
-    mainView->installEventFilter(this);
-    mainView->setRenderHints(
-                QPainter::Antialiasing |
-                QPainter::HighQualityAntialiasing |
-                QPainter::NonCosmeticDefaultPen |
-                QPainter::SmoothPixmapTransform |
-                QPainter::TextAntialiasing);
-
-    connect(mainView,
-            SIGNAL(linkClicked(const QUrl&)),
-            SLOT(linkClicked(const QUrl&)));
-    setCentralWidget(mainView);
-
-    // TODO: That must be optional
-    mainView->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-    mainView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-    //mainView->show();
+    QGraphicsScene *scene = new QGraphicsScene(this);
+    QGraphicsView *graphicsView = new QGraphicsView(scene, this);
+    webView  = new QGraphicsWebView();
+    scene->addItem(webView);
+    qDebug() << graphicsView->children()[0];
+    setCentralWidget(graphicsView);
 
     // Creating menu
     QMenu* fileMenu = new QMenu("File");
@@ -79,6 +62,8 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     // Initializing QSP
     QSPInit();
     QSPCallback::QSPCallback();
+
+    qDebug() << "QPS init finished";
 }
 
 void FastQSPWindow::loadFonts()
@@ -287,8 +272,8 @@ void FastQSPWindow::openFile(const QString &filename)
 
         }
         aspectRatio = qreal(gameWidth) / qreal(gameHeight);
-        mainView->resize(gameWidth, gameHeight);
-        resize(gameWidth, gameHeight);
+        /*mainView->resize(gameWidth, gameHeight);
+        resize(gameWidth, gameHeight);*/
         loadPage();
     }
 }
@@ -302,13 +287,14 @@ void FastQSPWindow::refreshView()
 
 void FastQSPWindow::loadPage()
 {
-    mainView->setHtml(builder.getHTML());
+    webView->setHtml(builder.getHTML());
+    //mainView->setHtml(builder.getHTML());
 }
 
 // TODO: maximize doesn't work properly
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
 {
-    QMainWindow::resizeEvent(event);
+    /*QMainWindow::resizeEvent(event);
 
     QSize newSize;
     newSize = mainView->size();
@@ -327,7 +313,7 @@ void FastQSPWindow::resizeEvent(QResizeEvent *event)
         mainView->page()->setViewportSize(QSize(viewWidth, viewHeight));
         scaleFactor = qreal(viewWidth) / qreal(gameWidth);
         mainView->setZoomFactor(scaleFactor);
-    }
+    }*/
 }
 
 void FastQSPWindow::timerEvent(QTimerEvent *event)
