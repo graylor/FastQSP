@@ -6,6 +6,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     QMainWindow(parent),
     gameWidth(800),
     gameHeight(600),
+    aspectRatio(qreal(gameWidth) / qreal(gameHeight)),
     scaleFactor(1),
     media(new Phonon::MediaObject(this))
 {
@@ -31,15 +32,6 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
             SIGNAL(linkClicked(const QUrl&)),
             SLOT(linkClicked(const QUrl&)));
     setCentralWidget(mainView);
-    //mainView->setLayout(new QGridLayout());
-
-    gameWidth = 1280;
-    gameHeight = 800;
-
-    aspectRatio = qreal(gameWidth) / qreal(gameHeight);
-
-    //setWindowFlags(Qt::Window);
-
 
     // TODO: That must be optional
     mainView->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
@@ -270,6 +262,30 @@ void FastQSPWindow::openFile(const QString &filename)
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
         builder.setGameDir(gameDirectory);
         loadFonts();
+        QFile configFile(gameDirectory + QLatin1String("config.xml"));
+        if(configFile.open(QFile::ReadOnly))
+        {
+            QTextStream stream(&configFile);
+            QString config = stream.readLine();
+            configFile.close();
+
+            QRegExp re;
+            re.setPattern("width=\"(\\d+)\"");
+            re.indexIn(config);
+            gameWidth = re.cap(1).toInt();
+
+            re.setPattern("height=\"(\\d+)\"");
+            re.indexIn(config);
+            gameHeight = re.cap(1).toInt();
+
+            re.setPattern("title=\"(.+)\"");
+            re.indexIn(config);
+            setWindowTitle(re.cap(1));
+
+        }
+        aspectRatio = qreal(gameWidth) / qreal(gameHeight);
+        mainView->resize(gameWidth, gameHeight);
+        resize(gameWidth, gameHeight);
         loadPage();
     }
 }
