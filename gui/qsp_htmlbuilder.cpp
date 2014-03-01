@@ -38,7 +38,6 @@ QString QSP_HTMLBuilder::getHTML()
     updateMessage();
     updateObjects();
     updateActions();
-    qDebug() << stylesheet;
     return QLatin1String("<head><script type='text/javascript'>") %
             scripts %
             QLatin1String("</script>") %

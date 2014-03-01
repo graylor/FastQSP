@@ -6,7 +6,7 @@
 
 #include <QInputDialog>
 
-//extern FastQSPWindow *qspWin;
+extern FastQSPWindow *qspWin;
 
 namespace QSPCallback
 {

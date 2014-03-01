@@ -57,8 +57,9 @@ private slots:
 
 private:
     QMenu* gameMenu;
-    QWebView *mainView;
     QGraphicsWebView *webView;
+    QGraphicsView *graphicsView;
+    QGraphicsScene *scene;
     QString gameDirectory;
     uint gameWidth;
     uint gameHeight;

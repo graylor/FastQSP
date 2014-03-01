@@ -14,12 +14,15 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     audioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
     Phonon::createPath(media, audioOutput);
 
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    QGraphicsView *graphicsView = new QGraphicsView(scene, this);
+    scene = new QGraphicsScene(this);
+    graphicsView = new QGraphicsView(scene, this);
+    graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     webView  = new QGraphicsWebView();
+    webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     scene->addItem(webView);
-    qDebug() << graphicsView->children()[0];
-    setCentralWidget(graphicsView);
+    scene->setBackgroundBrush(QBrush(QColor(127, 127, 127)));
 
     // Creating menu
     QMenu* fileMenu = new QMenu("File");
@@ -59,6 +62,13 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
 
     menuBar()->addMenu(helpMenu);
 
+    connect(webView,
+            SIGNAL(linkClicked(const QUrl &)),
+            SLOT(linkClicked(const QUrl &)),
+            Qt::DirectConnection);
+
+    setCentralWidget(graphicsView);
+
     // Initializing QSP
     QSPInit();
     QSPCallback::QSPCallback();
@@ -85,7 +95,7 @@ FastQSPWindow::~FastQSPWindow()
 
 bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
 {
-    QMainWindow::eventFilter(obj, e);
+    /*QMainWindow::eventFilter(obj, e);
     if(e->type() == QEvent::MouseButtonPress)
     {
         if(((QMouseEvent *)e)->button() != Qt::LeftButton)
@@ -99,7 +109,7 @@ bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
     {
         return true;
     }
-    return false;
+    return false;*/
 }
 
 // without it key schourts doesn't work whem menu bar is hidden
@@ -177,12 +187,13 @@ void FastQSPWindow::showHtml()
     static QTextEdit *htmlText;
     if(!htmlText)
         htmlText = new QTextEdit();
-    htmlText->setPlainText(mainView->page()->mainFrame()->toHtml());
+    htmlText->setPlainText(webView->page()->mainFrame()->toHtml());
     htmlText->show();
 }
 
 void FastQSPWindow::linkClicked(const QUrl & url)
 {
+    qDebug() << "Link clicked" << url.toString();
     if(url.toString().startsWith(QLatin1String("exec:"), Qt::CaseInsensitive))
     {
         QString execStr;
@@ -221,7 +232,6 @@ void FastQSPWindow::linkClicked(const QUrl & url)
         QSPExecuteSelActionCode(true);
     }
     loadPage();
-    qDebug() << "Link clicked" << url.toString();
 }
 
 void FastQSPWindow::playAudio(QString filename, int vol)
@@ -272,8 +282,12 @@ void FastQSPWindow::openFile(const QString &filename)
 
         }
         aspectRatio = qreal(gameWidth) / qreal(gameHeight);
-        /*mainView->resize(gameWidth, gameHeight);
-        resize(gameWidth, gameHeight);*/
+        qDebug() << gameWidth << gameHeight;
+        webView->resize(gameWidth, gameHeight);
+        webView->setMaximumWidth(gameWidth);
+        webView->setMaximumHeight(gameHeight);
+        webView->setMinimumWidth(gameWidth);
+        webView->setMinimumHeight(gameHeight);
         loadPage();
     }
 }
@@ -288,32 +302,29 @@ void FastQSPWindow::refreshView()
 void FastQSPWindow::loadPage()
 {
     webView->setHtml(builder.getHTML());
-    //mainView->setHtml(builder.getHTML());
 }
 
 // TODO: maximize doesn't work properly
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
 {
-    /*QMainWindow::resizeEvent(event);
+    QMainWindow::resizeEvent(event);
 
-    QSize newSize;
-    newSize = mainView->size();
-
+    QSize newSize = size();
     if(newSize.isValid())
     {
-        int viewWidth, viewHeight;
+        qreal viewWidth, viewHeight;
         viewWidth = newSize.width();
         viewHeight = viewWidth / aspectRatio;
         if(viewHeight > newSize.height())
         {
             viewHeight = newSize.height();
             viewWidth = viewHeight * aspectRatio;
-            //if(isMaximized() || isFullScreen())
         }
-        mainView->page()->setViewportSize(QSize(viewWidth, viewHeight));
+        qDebug() << viewWidth << viewHeight << aspectRatio;
         scaleFactor = qreal(viewWidth) / qreal(gameWidth);
-        mainView->setZoomFactor(scaleFactor);
-    }*/
+        webView->setScale(scaleFactor);
+
+    }
 }
 
 void FastQSPWindow::timerEvent(QTimerEvent *event)
