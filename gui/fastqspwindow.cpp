@@ -59,8 +59,12 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
                     this,
                     SLOT(loadGame()),
                     Qt::CTRL + Qt::Key_L);
+    gameMenu->addAction("Fullscreen",
+                    this,
+                    SLOT(toggleFullscreen()),
+                    Qt::Key_Return + Qt::AltModifier);
     menuBar()->addMenu(gameMenu);
-    //gameMenu->setDisabled(true);
+    gameMenu->setDisabled(true);
 
     QMenu* helpMenu = new QMenu("Help");
     helpMenu->addAction("Show html",
@@ -113,23 +117,28 @@ bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
     return false;
 }
 
+// without it key schourts doesn't work whem menu bar is hidden
 void FastQSPWindow::keyPressEvent(QKeyEvent *e)
 {
     if ((e->key()==Qt::Key_Return) && (e->modifiers()==Qt::AltModifier))
     {
+        toggleFullscreen();
+    }
+}
 
-        if(isFullScreen())
-        {
-            menuBar()->show();
-            showNormal();
-            qDebug() << "normal mode";
-        }
-        else
-        {
-            menuBar()->hide();
-            showFullScreen();
-            qDebug() << "fullscreen";
-        }
+void FastQSPWindow::toggleFullscreen()
+{
+    if(isFullScreen())
+    {
+        menuBar()->show();
+        showNormal();
+        qDebug() << "fullscreen mode off";
+    }
+    else
+    {
+        menuBar()->hide();
+        showFullScreen();
+        qDebug() << "fullscreen mode on";
     }
 }
 
@@ -252,7 +261,7 @@ void FastQSPWindow::openFile(const QString &filename)
         qCritical() << QString("Could not open file: ") << filename;
     if(QSPRestartGame(QSP_TRUE))
     {
-        //gameMenu->setEnabled(true);
+        gameMenu->setEnabled(true);
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
         builder.setGameDir(gameDirectory);
         loadFonts();
