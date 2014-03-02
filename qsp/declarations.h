@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <locale.h>
-#include <time.h>
+#include <time_qsp.h>
 #include <limits.h>
 #include <string.h>
 #include <wchar.h>

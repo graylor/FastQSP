@@ -113,7 +113,7 @@
 #include <string.h>
 #include <signal.h>
 #include <setjmp.h>
-#include <time.h>
+#include <time_qsp.h>
 #include <limits.h>
 #include "memwatch.h"
 

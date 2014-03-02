@@ -35,9 +35,9 @@
 	{
 	#endif
 
-	QSP_EXTERN QSP_BOOL QSPIsInCallBack();
-	QSP_EXTERN void QSPEnableDebugMode(QSP_BOOL isDebug);
-	QSP_EXTERN void QSPGetCurStateData(QSP_CHAR **loc, int *actIndex, int *line);
+    QSP_EXTERN QSP_BOOL QSPIsInCallBack();
+    QSP_EXTERN void QSPEnableDebugMode(QSP_BOOL isDebug);
+    QSP_EXTERN void QSPGetCurStateData(QSP_CHAR **loc, int *actIndex, int *line);
 	QSP_EXTERN const QSP_CHAR *QSPGetVersion();
 	QSP_EXTERN const QSP_CHAR *QSPGetCompiledDateTime();
 	QSP_EXTERN int QSPGetFullRefreshCount();
@@ -84,7 +84,7 @@
 	QSP_EXTERN QSP_BOOL QSPOpenSavedGame(const QSP_CHAR *file, QSP_BOOL isRefresh);
 	QSP_EXTERN QSP_BOOL QSPOpenSavedGameFromData(const void *data, int dataSize, QSP_BOOL isRefresh);
 	QSP_EXTERN QSP_BOOL QSPRestartGame(QSP_BOOL isRefresh);
-	QSP_EXTERN void QSPSetCallBack(int type, QSP_CALLBACK func);
+    QSP_EXTERN void QSPSetCallBack(int type, QSP_CALLBACK func);
 	QSP_EXTERN void QSPInit();
 	QSP_EXTERN void QSPDeInit();
 

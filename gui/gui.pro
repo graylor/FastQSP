@@ -9,7 +9,9 @@ QT       += core gui webkit webkitwidgets phonon
 TARGET = FastQSP
 TEMPLATE = app
 
-DEFINES += NOT_RUBY EXPORT _WIN _UNICODE
+DEFINES += NOT_RUBY EXPORT _UNICODE
+
+win32: DEFINES+= _WIN
 
 SOURCES += main.cpp\
     qsp_callback.cpp \
@@ -23,7 +25,14 @@ HEADERS  += \
     fastqspwindow.h \
     qsp_htmlbuilder.h
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qsp/release/ -lqsp
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../qsp/debug/ -lqsp
+CONFIG(release, debug|release): DESTDIR = release
+else: CONFIG(debug, debug|release): DESTDIR = debug
+
+CONFIG(release, debug|release): OBJ_DIR = release
+else: CONFIG(debug, debug|release): OBJ_DIR = debug
+
+
+CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qsp/release/ -lqsp
+else:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../qsp/debug/ -lqsp
 
 

@@ -1,4 +1,5 @@
 #include "qsp_callback.h"
+#include "qsp_default.h"
 #include "fastqspwindow.h"
 
 
@@ -259,6 +260,7 @@ void FastQSPWindow::linkClicked(const QUrl & url)
 
 void FastQSPWindow::playAudio(QString filename, int vol)
 {
+    filename = filename.replace('\\','/');
     if(QFile(filename).exists())
     {
         qDebug() << "playing:" << filename << vol;

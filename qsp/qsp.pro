@@ -4,9 +4,17 @@
 
 TEMPLATE = lib
 TARGET = qsp
-CONFIG += dll
+win32: CONFIG += dll
 
-DEFINES += NOT_RUBY EXPORT _UNICODE _WIN
+DEFINES += NOT_RUBY EXPORT _UNICODE
+
+win32: DEFINES+= _WIN
+
+CONFIG(release, debug|release): DESTDIR = release
+else: CONFIG(debug, debug|release): DESTDIR = debug
+
+CONFIG(release, debug|release): OBJ_DIR = release
+else: CONFIG(debug, debug|release): OBJ_DIR = debug
 
 # Input
 HEADERS += actions.h \
@@ -27,7 +35,6 @@ HEADERS += actions.h \
            regexp.h \
            statements.h \
            text.h \
-           time.h \
            variables.h \
            variant.h \
            bindings/bindings_config.h \
@@ -40,7 +47,8 @@ HEADERS += actions.h \
            bindings/android/android.h \
            bindings/default/qsp_default.h \
            bindings/flash/flash.h \
-           bindings/java/java.h
+           bindings/java/java.h \
+    time_qsp.h
 SOURCES += actions.c \
            callbacks.c \
            codetools.c \
@@ -57,7 +65,6 @@ SOURCES += actions.c \
            regexp.c \
            statements.c \
            text.c \
-           time.c \
            towlower.c \
            towupper.c \
            variables.c \
@@ -90,4 +97,5 @@ SOURCES += actions.c \
            onig/enc/utf16_be.c \
            onig/enc/utf16_le.c \
            onig/enc/utf32_be.c \
-           onig/enc/utf32_le.c
+           onig/enc/utf32_le.c \
+    time_qsp.c
