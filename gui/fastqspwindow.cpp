@@ -19,8 +19,8 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     graphicsView->setUpdatesEnabled(true);
-    graphicsView->setContentsMargins(0, 0, 0, 0);
-    graphicsView->setAlignment(Qt::AlignCenter);
+    //graphicsView->setContentsMargins(0, 0, 0, 0);
+    //graphicsView->setAlignment(Qt::AlignCenter);
 
     webView  = new QGraphicsWebView();
     webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
@@ -113,7 +113,7 @@ FastQSPWindow::~FastQSPWindow()
 
 bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
 {
-    /*QMainWindow::eventFilter(obj, e);
+    QMainWindow::eventFilter(obj, e);
     if(e->type() == QEvent::MouseButtonPress)
     {
         if(((QMouseEvent *)e)->button() != Qt::LeftButton)
@@ -127,7 +127,7 @@ bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
     {
         return true;
     }
-    return false;*/
+    return false;
 }
 
 void FastQSPWindow::updateView()
@@ -163,7 +163,7 @@ void FastQSPWindow::toggleFullscreen()
 void FastQSPWindow::about()
 {
     QLabel *about = new QLabel;
-    about->setText("<h2>FastQSP player v0.3</h2><table><tr><td>Author:</td> <td>Graylor[graylor@yandex.ru]</td></tr><tr><td>Page:</td> <td><a href='https://github.com/graylor/FastQSP'>https://github.com/graylor/FastQSP</a></td></tr><tr><td>License:</td> <td>GPL v3</td></tr>");
+    about->setText("<h2>FastQSP player v0.4</h2><table><tr><td>Author:</td> <td>Graylor[graylor@yandex.ru]</td></tr><tr><td>Page:</td> <td><a href='https://github.com/graylor/FastQSP'>https://github.com/graylor/FastQSP</a></td></tr><tr><td>License:</td> <td>GPL v3</td></tr>");
     about->setFixedSize(250,90);
     about->show();
 }
@@ -306,9 +306,9 @@ void FastQSPWindow::openFile(const QString &filename)
         }
         aspectRatio = qreal(gameWidth) / qreal(gameHeight);
         //qDebug() << gameWidth << gameHeight;
+        loadPage();        
         webView->resize(gameWidth, gameHeight);
-
-        loadPage();
+        resize(gameWidth, gameHeight);
     }
 }
 
@@ -324,7 +324,6 @@ void FastQSPWindow::loadPage()
    webView->setHtml(builder.getHTML());
 }
 
-// TODO: maximize doesn't work properly
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
@@ -339,7 +338,6 @@ void FastQSPWindow::resizeEvent(QResizeEvent *event)
             viewHeight = newSize.height();
             viewWidth = viewHeight * aspectRatio;
         }
-        qDebug() << viewWidth << viewHeight << aspectRatio;
         scaleFactor = qreal(viewWidth) / qreal(gameWidth);
         webView->setScale(scaleFactor);
     }
