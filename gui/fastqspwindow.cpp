@@ -18,11 +18,21 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     graphicsView = new QGraphicsView(scene, this);
     graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    graphicsView->setUpdatesEnabled(true);
+    graphicsView->setContentsMargins(0, 0, 0, 0);
+    graphicsView->setAlignment(Qt::AlignCenter);
 
     webView  = new QGraphicsWebView();
     webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     scene->addItem(webView);
-    scene->setBackgroundBrush(QBrush(QColor(127, 127, 127)));
+    scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
+    webView->setRenderHints(QPainter::Antialiasing |
+                            QPainter::HighQualityAntialiasing |
+                            QPainter::TextAntialiasing |
+                            QPainter::SmoothPixmapTransform |
+                            QPainter::NonCosmeticDefaultPen);
+    webView->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
+    webView->setAutoFillBackground(false);
 
     // Creating menu
     QMenu* fileMenu = new QMenu("File");
@@ -65,6 +75,14 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     connect(webView,
             SIGNAL(linkClicked(const QUrl &)),
             SLOT(linkClicked(const QUrl &)),
+            Qt::DirectConnection);
+    connect(webView,
+            SIGNAL(loadFinished(bool)),
+            SLOT(updateView()),
+            Qt::DirectConnection);
+    connect(webView,
+            SIGNAL(loadStarted()),
+            SLOT(updateView()),
             Qt::DirectConnection);
 
     setCentralWidget(graphicsView);
@@ -110,6 +128,11 @@ bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
         return true;
     }
     return false;*/
+}
+
+void FastQSPWindow::updateView()
+{
+    graphicsView->setUpdatesEnabled(!graphicsView->updatesEnabled());
 }
 
 // without it key schourts doesn't work whem menu bar is hidden
@@ -282,12 +305,9 @@ void FastQSPWindow::openFile(const QString &filename)
 
         }
         aspectRatio = qreal(gameWidth) / qreal(gameHeight);
-        qDebug() << gameWidth << gameHeight;
+        //qDebug() << gameWidth << gameHeight;
         webView->resize(gameWidth, gameHeight);
-        webView->setMaximumWidth(gameWidth);
-        webView->setMaximumHeight(gameHeight);
-        webView->setMinimumWidth(gameWidth);
-        webView->setMinimumHeight(gameHeight);
+
         loadPage();
     }
 }
@@ -301,14 +321,13 @@ void FastQSPWindow::refreshView()
 
 void FastQSPWindow::loadPage()
 {
-    webView->setHtml(builder.getHTML());
+   webView->setHtml(builder.getHTML());
 }
 
 // TODO: maximize doesn't work properly
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
-
     QSize newSize = size();
     if(newSize.isValid())
     {
@@ -323,7 +342,6 @@ void FastQSPWindow::resizeEvent(QResizeEvent *event)
         qDebug() << viewWidth << viewHeight << aspectRatio;
         scaleFactor = qreal(viewWidth) / qreal(gameWidth);
         webView->setScale(scaleFactor);
-
     }
 }
 

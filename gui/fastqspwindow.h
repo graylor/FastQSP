@@ -54,6 +54,7 @@ private slots:
     void loadGame();
     void linkClicked(const QUrl & url);
     void toggleFullscreen();
+    void updateView();
 
 private:
     QMenu* gameMenu;
