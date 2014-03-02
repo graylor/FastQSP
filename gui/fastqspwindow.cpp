@@ -305,7 +305,6 @@ void FastQSPWindow::openFile(const QString &filename)
 
         }
         aspectRatio = qreal(gameWidth) / qreal(gameHeight);
-        //qDebug() << gameWidth << gameHeight;
         loadPage();        
         webView->resize(gameWidth, gameHeight);
         resize(gameWidth, gameHeight);
