@@ -24,6 +24,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsWebView>
 #include <QGraphicsView>
+#include <QShortcut>
 
 class FastQSPWindow : public QMainWindow
 {
@@ -44,7 +45,6 @@ protected:
     void timerEvent(QTimerEvent *event);
     void resizeEvent(QResizeEvent *event);
     bool eventFilter(QObject * obj, QEvent *e);
-    void keyPressEvent(QKeyEvent *e);
 
 private slots:
     void openFileDialog();
@@ -54,7 +54,7 @@ private slots:
     void loadGame();
     void linkClicked(const QUrl & url);
     void toggleFullscreen();
-    void updateView();
+    void toggleUpdate();
 
 private:
     QMenu* gameMenu;

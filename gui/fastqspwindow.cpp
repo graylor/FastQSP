@@ -37,29 +37,40 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
 
     // Creating menu
     QMenu* fileMenu = new QMenu("File");
-    fileMenu->addAction("Open file",
+    fileMenu->addAction("Open file\tCtrl+O",
                     this,
-                    SLOT(openFileDialog()),
-                    Qt::CTRL + Qt::Key_O);
-    fileMenu->addAction("Exit",
+                    SLOT(openFileDialog()));
+    QShortcut *openFile = new QShortcut(QKeySequence("Ctrl+O"), this);
+    connect(openFile, SIGNAL(activated()), SLOT(openFileDialog()));
+
+    fileMenu->addAction("Exit\tCtrl+Q",
                     this,
-                    SLOT(close()),
-                    Qt::CTRL + Qt::Key_Q);
+                    SLOT(close()));
+    QShortcut *exit = new QShortcut(QKeySequence("Ctrl+Q"), this);
+    connect(exit, SIGNAL(activated()), SLOT(close()));
+
     menuBar()->addMenu(fileMenu);
 
     gameMenu = new QMenu("Game");
-    gameMenu->addAction("Save",
+    gameMenu->addAction("Save\tCtrl+S",
                     this,
-                    SLOT(saveGame()),
-                    Qt::CTRL + Qt::Key_S);
-    gameMenu->addAction("Load",
+                    SLOT(saveGame()));
+    QShortcut *save = new QShortcut(QKeySequence("Ctrl+S"), this);
+    connect(save, SIGNAL(activated()), SLOT(saveGame()));
+
+    gameMenu->addAction("Load\tCtrl+L",
                     this,
-                    SLOT(loadGame()),
-                    Qt::CTRL + Qt::Key_L);
+                    SLOT(loadGame()));
+    QShortcut *load = new QShortcut(QKeySequence("Ctrl+L"), this);
+    connect(load, SIGNAL(activated()), SLOT(loadGame()));
+
     gameMenu->addAction("Fullscreen",
                     this,
-                    SLOT(toggleFullscreen()),
-                    Qt::Key_Return + Qt::AltModifier);
+                    SLOT(toggleFullscreen()));
+    QShortcut *fullscreen = new QShortcut(QKeySequence(Qt::Key_Return + Qt::AltModifier), this);
+    connect(fullscreen, SIGNAL(activated()), SLOT(toggleFullscreen()));
+
+
     menuBar()->addMenu(gameMenu);
     gameMenu->setDisabled(true);
 
@@ -79,11 +90,11 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
             Qt::DirectConnection);
     connect(webView,
             SIGNAL(loadFinished(bool)),
-            SLOT(updateView()),
+            SLOT(toggleUpdate()),
             Qt::DirectConnection);
     connect(webView,
             SIGNAL(loadStarted()),
-            SLOT(updateView()),
+            SLOT(toggleUpdate()),
             Qt::DirectConnection);
 
     setCentralWidget(graphicsView);
@@ -92,7 +103,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     QSPInit();
     QSPCallback::QSPCallback();
 
-    qDebug() << "QPS init finished";
+    qDebug() << "QSP init finished";
 }
 
 void FastQSPWindow::loadFonts()
@@ -131,18 +142,9 @@ bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
     return false;
 }
 
-void FastQSPWindow::updateView()
+void FastQSPWindow::toggleUpdate()
 {
     graphicsView->setUpdatesEnabled(!graphicsView->updatesEnabled());
-}
-
-// without it key schourts doesn't work whem menu bar is hidden
-void FastQSPWindow::keyPressEvent(QKeyEvent *e)
-{
-    if ((e->key()==Qt::Key_Return) && (e->modifiers()==Qt::AltModifier))
-    {
-        toggleFullscreen();
-    }
 }
 
 void FastQSPWindow::toggleFullscreen()
@@ -260,12 +262,12 @@ void FastQSPWindow::linkClicked(const QUrl & url)
 
 void FastQSPWindow::playAudio(QString filename, int vol)
 {
-    filename = filename.replace('\\','/');
+    filename = filename.replace('\\', '/');
     if(QFile(filename).exists())
     {
         qDebug() << "playing:" << filename << vol;
         audioOutput->setVolume(qreal(vol) / qreal(100));
-        media->setCurrentSource(QUrl(filename));
+        media->setCurrentSource(QUrl::fromLocalFile(QFileInfo(filename).absolutePath()));
         media->play();
     }
 }
@@ -339,6 +341,7 @@ void FastQSPWindow::resizeEvent(QResizeEvent *event)
             viewHeight = newSize.height();
             viewWidth = viewHeight * aspectRatio;
         }
+        //graphicsView->resize(viewWidth, viewHeight);
         scaleFactor = qreal(viewWidth) / qreal(gameWidth);
         webView->setScale(scaleFactor);
     }
