@@ -50,7 +50,8 @@ private slots:
     void openFileDialog();
     void about();
     void showHtml();
-    void saveGame();
+    void saveGameDialog();
+    void saveGame(const QString &filename);
     void loadGame();
     void restartGame();
     void linkClicked(const QUrl & url);
@@ -59,6 +60,7 @@ private slots:
 
 private:
     QMenu* gameMenu;
+    QAction *autosave;
     QGraphicsWebView *webView;
     QGraphicsView *graphicsView;
     QGraphicsScene *scene;

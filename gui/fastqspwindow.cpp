@@ -34,6 +34,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     webView->setAutoFillBackground(false);
 
     // Creating menu
+    //-File menu--------------------------------------------------------
     QMenu* fileMenu = new QMenu("File");
     fileMenu->addAction("Open file\tCtrl+O",
                     this,
@@ -49,12 +50,13 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
 
     menuBar()->addMenu(fileMenu);
 
+    //-Game menu--------------------------------------------------------
     gameMenu = new QMenu("Game");
     gameMenu->addAction("Save\tCtrl+S",
                     this,
-                    SLOT(saveGame()));
+                    SLOT(saveGameDialog()));
     QShortcut *save = new QShortcut(QKeySequence("Ctrl+S"), this);
-    connect(save, SIGNAL(activated()), SLOT(saveGame()));
+    connect(save, SIGNAL(activated()), SLOT(saveGameDialog()));
 
     gameMenu->addAction("Load\tCtrl+L",
                     this,
@@ -68,9 +70,16 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     QShortcut *restart = new QShortcut(QKeySequence("Ctrl+R"), this);
     connect(restart, SIGNAL(activated()), SLOT(restartGame()));
 
+    // TODO: slows the game, move saving to diffrent thread
+    autosave = new QAction("Autosave", this);
+    autosave->setCheckable(true);
+    autosave->setChecked(false);
+    //gameMenu->addAction(autosave);
+
     menuBar()->addMenu(gameMenu);
     gameMenu->setDisabled(true);
 
+    //-Other menu-------------------------------------------------------
     QMenu* otherMenu = new QMenu("Other");
     otherMenu->addAction("Fullscreen\tAlt+Enter",
                     this,
@@ -83,13 +92,13 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
 
     menuBar()->addMenu(otherMenu);
 
-
+    //-Help menu--------------------------------------------------------
     QMenu* helpMenu = new QMenu("Help");
     helpMenu->addAction("About",
                     this,
                     SLOT(about()));
-
     menuBar()->addMenu(helpMenu);
+    //------------------------------------------------------------------
 
     connect(webView,
             SIGNAL(linkClicked(const QUrl &)),
@@ -188,7 +197,7 @@ void FastQSPWindow::openFileDialog()
     openFile(filename);
 }
 
-void FastQSPWindow::saveGame()
+void FastQSPWindow::saveGameDialog()
 {
     QFileDialog dlg;
     QString filename = dlg.getSaveFileName(
@@ -196,9 +205,16 @@ void FastQSPWindow::saveGame()
                 "Save Game",
                 gameDirectory,
                 "QSP save-game (*.sav)");
+    saveGame(filename);
+}
+
+void FastQSPWindow::saveGame(const QString &filename)
+{
+    qDebug() << "Saving game to" << filename;
     if(!filename.isEmpty())
         QSPSaveGame(filename.toStdWString().c_str(), true);
 }
+
 
 void FastQSPWindow::loadGame()
 {
@@ -338,6 +354,14 @@ void FastQSPWindow::refreshView()
 void FastQSPWindow::loadPage()
 {
    webView->setHtml(builder.getHTML());
+   if(autosave->isChecked())
+   {
+       QDir saveDir(gameDirectory + "save");
+       if (!saveDir.exists()) {
+           saveDir.mkpath(".");
+       }
+       saveGame(gameDirectory + "save/auto.sav");
+   }
 }
 
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
