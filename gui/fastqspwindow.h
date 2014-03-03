@@ -52,6 +52,7 @@ private slots:
     void showHtml();
     void saveGame();
     void loadGame();
+    void restartGame();
     void linkClicked(const QUrl & url);
     void toggleFullscreen();
     void toggleUpdate();

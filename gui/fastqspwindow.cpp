@@ -20,8 +20,6 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     graphicsView->setUpdatesEnabled(true);
-    //graphicsView->setContentsMargins(0, 0, 0, 0);
-    //graphicsView->setAlignment(Qt::AlignCenter);
 
     webView  = new QGraphicsWebView();
     webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
@@ -64,20 +62,29 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     QShortcut *load = new QShortcut(QKeySequence("Ctrl+L"), this);
     connect(load, SIGNAL(activated()), SLOT(loadGame()));
 
-    gameMenu->addAction("Fullscreen",
+    gameMenu->addAction("Restart\tCtrl+R",
                     this,
-                    SLOT(toggleFullscreen()));
-    QShortcut *fullscreen = new QShortcut(QKeySequence(Qt::Key_Return + Qt::AltModifier), this);
-    connect(fullscreen, SIGNAL(activated()), SLOT(toggleFullscreen()));
-
+                    SLOT(restartGame()));
+    QShortcut *restart = new QShortcut(QKeySequence("Ctrl+R"), this);
+    connect(restart, SIGNAL(activated()), SLOT(restartGame()));
 
     menuBar()->addMenu(gameMenu);
     gameMenu->setDisabled(true);
 
-    QMenu* helpMenu = new QMenu("Help");
-    helpMenu->addAction("Show html",
+    QMenu* otherMenu = new QMenu("Other");
+    otherMenu->addAction("Fullscreen\tAlt+Enter",
+                    this,
+                    SLOT(toggleFullscreen()));
+    QShortcut *fullscreen = new QShortcut(QKeySequence(Qt::Key_Return + Qt::AltModifier), this);
+    otherMenu->addAction("Show html",
                     this,
                     SLOT(showHtml()));
+    connect(fullscreen, SIGNAL(activated()), SLOT(toggleFullscreen()));
+
+    menuBar()->addMenu(otherMenu);
+
+
+    QMenu* helpMenu = new QMenu("Help");
     helpMenu->addAction("About",
                     this,
                     SLOT(about()));
@@ -206,6 +213,12 @@ void FastQSPWindow::loadGame()
     {
         loadPage();
     }
+}
+
+void FastQSPWindow::restartGame()
+{
+    QSPRestartGame(true);
+    loadPage();
 }
 
 void FastQSPWindow::showHtml()
