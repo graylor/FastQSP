@@ -9,6 +9,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     gameHeight(600),
     aspectRatio(qreal(gameWidth) / qreal(gameHeight)),
     scaleFactor(1),
+    gameIsOpen(false),
     media(new Phonon::MediaObject(this)),
     audioOutput(new Phonon::AudioOutput(Phonon::MusicCategory, this))
 {
@@ -183,7 +184,9 @@ void FastQSPWindow::toggleFullscreen()
 void FastQSPWindow::about()
 {
     QLabel *about = new QLabel;
-    about->setText("<h2>FastQSP player v0.4</h2><table><tr><td>Author:</td> <td>Graylor[graylor@yandex.ru]</td></tr><tr><td>Page:</td> <td><a href='https://github.com/graylor/FastQSP'>https://github.com/graylor/FastQSP</a></td></tr><tr><td>License:</td> <td>GPL v3</td></tr>");
+    about->setText("<h2>FastQSP player " %
+                   QCoreApplication::applicationVersion() %
+                   "</h2><table><tr><td>Author:</td> <td>Graylor[graylor@yandex.ru]</td></tr><tr><td>Page:</td> <td><a href='https://github.com/graylor/FastQSP'>https://github.com/graylor/FastQSP</a></td></tr><tr><td>License:</td> <td>GPL v3</td></tr>");
     about->setFixedSize(250,90);
     about->show();
 }
@@ -321,6 +324,8 @@ void FastQSPWindow::stopAudio()
 
 void FastQSPWindow::openFile(const QString &filename)
 {
+    if(gameIsOpen)
+        autosave();
     if(!QSPLoadGameWorld(filename.toStdWString().c_str()))
         qCritical() << QString("Could not open file: ") << filename;
     if(QSPRestartGame(QSP_TRUE))
@@ -354,6 +359,7 @@ void FastQSPWindow::openFile(const QString &filename)
         loadPage();        
         webView->resize(gameWidth, gameHeight);
         resize(gameWidth, gameHeight);
+        gameIsOpen = true;
     }
     if(QFile(gameDirectory + "save/auto.sav").exists())
         loadGame(gameDirectory + "save/auto.sav");
@@ -390,7 +396,8 @@ void FastQSPWindow::resizeEvent(QResizeEvent *event)
 
 void FastQSPWindow::closeEvent(QCloseEvent *event)
 {
-    autosave();
+    if(gameIsOpen)
+        autosave();
 }
 
 void FastQSPWindow::timerEvent(QTimerEvent *event)

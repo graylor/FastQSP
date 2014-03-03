@@ -4,6 +4,7 @@
 #include "qsp_default.h"
 #include "qsp_htmlbuilder.h"
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QResizeEvent>
 #include <QMenuBar>
@@ -72,6 +73,7 @@ private:
     uint gameHeight;
     qreal aspectRatio;
     qreal scaleFactor;
+    bool gameIsOpen;
     Phonon::MediaObject *media;
     Phonon::AudioOutput *audioOutput;
     void loadFonts();

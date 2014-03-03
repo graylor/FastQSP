@@ -7,6 +7,7 @@ FastQSPWindow* qspWin;
 int main(int argc, char *argv[])
 {
     QCoreApplication::setApplicationName("FastQSP");
+    QCoreApplication::setApplicationVersion("v0.4.2");
 
     QApplication a(argc, argv);
     qspWin = new FastQSPWindow();
