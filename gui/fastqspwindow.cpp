@@ -198,7 +198,8 @@ void FastQSPWindow::openFileDialog()
                 "Open File",
                 NULL,
                 "QSP game (*.qsp)");
-    openFile(filename);
+    if(!filename.isEmpty())
+        openFile(filename);
 }
 
 void FastQSPWindow::saveGameDialog()
@@ -207,8 +208,7 @@ void FastQSPWindow::saveGameDialog()
     if(!saveDir.exists())
         saveDir.mkpath(".");
 
-    QFileDialog dlg;
-    QString filename = dlg.getSaveFileName(
+    QString filename = QFileDialog::getSaveFileName(
                 this,
                 "Save Game",
                 gameDirectory + "save/",
@@ -232,8 +232,8 @@ void FastQSPWindow::loadGameDialog()
                 "Load Game",
                 gameDirectory,
                 "QSP save-game (*.sav)");
-    loadGame(filename);
-
+    if(!filename.isEmpty())
+        loadGame(filename);
 }
 
 void FastQSPWindow::loadGame(const QString &filename)
