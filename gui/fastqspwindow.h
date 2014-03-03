@@ -42,17 +42,20 @@ signals:
 public slots:
 
 protected:
-    void timerEvent(QTimerEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    void timerEvent(QTimerEvent * event);
+    void resizeEvent(QResizeEvent * event);
     bool eventFilter(QObject * obj, QEvent *e);
+    void closeEvent(QCloseEvent * event);
 
 private slots:
     void openFileDialog();
     void about();
     void showHtml();
     void saveGameDialog();
+    void autosave();
     void saveGame(const QString &filename);
-    void loadGame();
+    void loadGameDialog();
+    void loadGame(const QString &filename);
     void restartGame();
     void linkClicked(const QUrl & url);
     void toggleFullscreen();
@@ -60,7 +63,7 @@ private slots:
 
 private:
     QMenu* gameMenu;
-    QAction *autosave;
+    QAction *autosaveAction;
     QGraphicsWebView *webView;
     QGraphicsView *graphicsView;
     QGraphicsScene *scene;

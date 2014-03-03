@@ -9,12 +9,13 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     gameHeight(600),
     aspectRatio(qreal(gameWidth) / qreal(gameHeight)),
     scaleFactor(1),
-    media(new Phonon::MediaObject(this))
+    media(new Phonon::MediaObject(this)),
+    audioOutput(new Phonon::AudioOutput(Phonon::MusicCategory, this))
 {
     // Init audio
-    audioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
     Phonon::createPath(media, audioOutput);
 
+    // Init view
     scene = new QGraphicsScene(this);
     graphicsView = new QGraphicsView(scene, this);
     graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -60,9 +61,9 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
 
     gameMenu->addAction("Load\tCtrl+L",
                     this,
-                    SLOT(loadGame()));
+                    SLOT(loadGameDialog()));
     QShortcut *load = new QShortcut(QKeySequence("Ctrl+L"), this);
-    connect(load, SIGNAL(activated()), SLOT(loadGame()));
+    connect(load, SIGNAL(activated()), SLOT(loadGameDialog()));
 
     gameMenu->addAction("Restart\tCtrl+R",
                     this,
@@ -71,9 +72,9 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     connect(restart, SIGNAL(activated()), SLOT(restartGame()));
 
     // TODO: slows the game, move saving to diffrent thread
-    autosave = new QAction("Autosave", this);
-    autosave->setCheckable(true);
-    autosave->setChecked(false);
+    autosaveAction = new QAction("Autosave", this);
+    autosaveAction->setCheckable(true);
+    autosaveAction->setChecked(false);
     //gameMenu->addAction(autosave);
 
     menuBar()->addMenu(gameMenu);
@@ -216,7 +217,7 @@ void FastQSPWindow::saveGame(const QString &filename)
 }
 
 
-void FastQSPWindow::loadGame()
+void FastQSPWindow::loadGameDialog()
 {
     QFileDialog dlg;
     QString filename = dlg.getOpenFileName(
@@ -224,12 +225,20 @@ void FastQSPWindow::loadGame()
                 "Load Game",
                 gameDirectory,
                 "QSP save-game (*.sav)");
+    loadGame(filename);
+
+}
+
+void FastQSPWindow::loadGame(const QString &filename)
+{
+    qDebug() << "Loading game from" << filename;
     if(!filename.isEmpty() &&
         QSPOpenSavedGame(filename.toStdWString().c_str(), true))
     {
         loadPage();
     }
 }
+
 
 void FastQSPWindow::restartGame()
 {
@@ -294,9 +303,9 @@ void FastQSPWindow::playAudio(QString filename, int vol)
     filename = filename.replace('\\', '/');
     if(QFile(filename).exists())
     {
-        qDebug() << "playing:" << filename << vol;
+        qDebug() << "playing:" << QFileInfo(filename).filePath() << vol;
         audioOutput->setVolume(qreal(vol) / qreal(100));
-        media->setCurrentSource(QUrl::fromLocalFile(QFileInfo(filename).absolutePath()));
+        media->setCurrentSource(QUrl::fromLocalFile(QFileInfo(filename).filePath()));
         media->play();
     }
 }
@@ -342,6 +351,9 @@ void FastQSPWindow::openFile(const QString &filename)
         webView->resize(gameWidth, gameHeight);
         resize(gameWidth, gameHeight);
     }
+    if(QFile(gameDirectory + "save/auto.sav").exists())
+        loadGame(gameDirectory + "save/auto.sav");
+
 }
 
 // That function is called by callback if isRefsresh == true
@@ -354,19 +366,27 @@ void FastQSPWindow::refreshView()
 void FastQSPWindow::loadPage()
 {
    webView->setHtml(builder.getHTML());
-   if(autosave->isChecked())
-   {
-       QDir saveDir(gameDirectory + "save");
-       if (!saveDir.exists()) {
-           saveDir.mkpath(".");
-       }
-       saveGame(gameDirectory + "save/auto.sav");
-   }
+   if(autosaveAction->isChecked())
+       autosave();
+}
+
+void FastQSPWindow::autosave()
+{
+    QDir saveDir(gameDirectory + "save");
+    if (!saveDir.exists()) {
+        saveDir.mkpath(".");
+    }
+    saveGame(gameDirectory + "save/auto.sav");
 }
 
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
 {
     graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void FastQSPWindow::closeEvent(QCloseEvent *event)
+{
+    autosave();
 }
 
 void FastQSPWindow::timerEvent(QTimerEvent *event)
