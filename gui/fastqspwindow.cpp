@@ -329,22 +329,7 @@ void FastQSPWindow::loadPage()
 
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
 {
-    QMainWindow::resizeEvent(event);
-    QSize newSize = size();
-    if(newSize.isValid())
-    {
-        qreal viewWidth, viewHeight;
-        viewWidth = newSize.width();
-        viewHeight = viewWidth / aspectRatio;
-        if(viewHeight > newSize.height())
-        {
-            viewHeight = newSize.height();
-            viewWidth = viewHeight * aspectRatio;
-        }
-        //graphicsView->resize(viewWidth, viewHeight);
-        scaleFactor = qreal(viewWidth) / qreal(gameWidth);
-        webView->setScale(scaleFactor);
-    }
+    graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void FastQSPWindow::timerEvent(QTimerEvent *event)
