@@ -200,11 +200,15 @@ void FastQSPWindow::openFileDialog()
 
 void FastQSPWindow::saveGameDialog()
 {
+    QDir saveDir(gameDirectory + "save/");
+    if(!saveDir.exists())
+        saveDir.mkpath(".");
+
     QFileDialog dlg;
     QString filename = dlg.getSaveFileName(
                 this,
                 "Save Game",
-                gameDirectory,
+                gameDirectory + "save/",
                 "QSP save-game (*.sav)");
     saveGame(filename);
 }
