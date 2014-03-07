@@ -209,13 +209,16 @@ void FastQSPWindow::saveGameDialog()
                 "Save Game",
                 saveDir.absolutePath(),
                 "QSP save-game (*.sav)");
+    if(!filename.isEmpty() &&
+       !filename.endsWith(QLatin1String(".sav"), Qt::CaseInsensitive))
+        filename += QLatin1String(".sav");
     saveGame(filename);
 }
 
 void FastQSPWindow::saveGame(const QString &filename)
 {
     qDebug() << "Saving game to" << filename;
-    if(!filename.isEmpty())
+    if(!filename.isEmpty())    
         QSPSaveGame(filename.toStdWString().c_str(), true);
 }
 
