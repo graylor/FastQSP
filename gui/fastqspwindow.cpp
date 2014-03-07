@@ -363,10 +363,10 @@ void FastQSPWindow::openFile(const QString &filename)
         webView->resize(gameWidth, gameHeight);
         resize(gameWidth, gameHeight);
         gameIsOpen = true;
-    }
-    saveDir = gameDirectory + "save/";
-    if (!saveDir.exists()) {
-        saveDir.mkpath(".");
+        saveDir = gameDirectory + "save/";
+        if (!saveDir.exists()) {
+            saveDir.mkpath(".");
+        }
     }
 }
 
@@ -386,8 +386,8 @@ void FastQSPWindow::loadPage()
 
 void FastQSPWindow::autosave()
 {
-    qDebug() << "autosave:" << saveDir.absolutePath() + "auto.sav";
-    saveGame(saveDir.absolutePath() + "auto.sav");
+    qDebug() << "autosave:" << saveDir.absolutePath() + "/auto.sav";
+    saveGame(saveDir.absolutePath() + "/auto.sav");
 }
 
 void FastQSPWindow::resizeEvent(QResizeEvent *event)

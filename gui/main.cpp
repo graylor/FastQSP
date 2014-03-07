@@ -13,10 +13,10 @@ int main(int argc, char *argv[])
     qspWin = new FastQSPWindow();
     qspWin->resize(975, 630);
 
-
-
     qspWin->show();
 
+    if(argc > 1, QFile(argv[1]).exists())
+        qspWin->openFile(argv[1]);
 
     return a.exec();
 }
