@@ -290,17 +290,21 @@ void FastQSPWindow::linkClicked(const QUrl & url)
         builder.hideMessage();
     }
     else
+    if(url.toString().startsWith(QLatin1String("http"), Qt::CaseInsensitive) ||
+       url.toString().startsWith(QLatin1String("mailto"), Qt::CaseInsensitive))
+    {
+        QDesktopServices::openUrl(url);
+    }
+    else
     {
         bool ok = false;
         int number;
         number = url.toString().toInt(&ok);
-        if(!ok)
+        if(ok)
         {
-            qCritical() << "Unknown link format" << url.toString();
-            return;
+            QSPSetSelActionIndex(number - 1, true);
+            QSPExecuteSelActionCode(true);
         }
-        QSPSetSelActionIndex(number - 1, true);
-        QSPExecuteSelActionCode(true);
     }
     loadPage();
 }

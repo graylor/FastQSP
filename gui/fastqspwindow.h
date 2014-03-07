@@ -26,6 +26,7 @@
 #include <QGraphicsWebView>
 #include <QGraphicsView>
 #include <QShortcut>
+#include <QDesktopServices>
 
 class FastQSPWindow : public QMainWindow
 {
