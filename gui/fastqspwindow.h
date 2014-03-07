@@ -77,6 +77,7 @@ private:
     bool gameIsOpen;
     Phonon::MediaObject *media;
     Phonon::AudioOutput *audioOutput;
+    QDir saveDir;
     void loadFonts();
     void loadPage();
 };

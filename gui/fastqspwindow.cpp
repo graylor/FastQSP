@@ -204,14 +204,10 @@ void FastQSPWindow::openFileDialog()
 
 void FastQSPWindow::saveGameDialog()
 {
-    QDir saveDir(gameDirectory + "save/");
-    if(!saveDir.exists())
-        saveDir.mkpath(".");
-
     QString filename = QFileDialog::getSaveFileName(
                 this,
                 "Save Game",
-                gameDirectory + "save/",
+                saveDir.absolutePath(),
                 "QSP save-game (*.sav)");
     saveGame(filename);
 }
@@ -230,7 +226,7 @@ void FastQSPWindow::loadGameDialog()
     QString filename = dlg.getOpenFileName(
                 this,
                 "Load Game",
-                gameDirectory,
+                saveDir.absolutePath(),
                 "QSP save-game (*.sav)");
     if(!filename.isEmpty())
         loadGame(filename);
@@ -365,9 +361,10 @@ void FastQSPWindow::openFile(const QString &filename)
         resize(gameWidth, gameHeight);
         gameIsOpen = true;
     }
-    if(QFile(gameDirectory + "save/auto.sav").exists())
-        loadGame(gameDirectory + "save/auto.sav");
-
+    saveDir = gameDirectory + "save/";
+    if (!saveDir.exists()) {
+        saveDir.mkpath(".");
+    }
 }
 
 // That function is called by callback if isRefsresh == true
@@ -386,11 +383,8 @@ void FastQSPWindow::loadPage()
 
 void FastQSPWindow::autosave()
 {
-    QDir saveDir(gameDirectory + "save");
-    if (!saveDir.exists()) {
-        saveDir.mkpath(".");
-    }
-    saveGame(gameDirectory + "save/auto.sav");
+    qDebug() << "autosave:" << saveDir.absolutePath() + "auto.sav";
+    saveGame(saveDir.absolutePath() + "auto.sav");
 }
 
 void FastQSPWindow::resizeEvent(QResizeEvent *event)
