@@ -35,6 +35,9 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     webView->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
     webView->setAutoFillBackground(false);
 
+    // Filter context menu event
+    graphicsView->viewport()->installEventFilter(this);
+
     // Creating menu
     //-File menu--------------------------------------------------------
     QMenu* fileMenu = new QMenu("File");
@@ -143,20 +146,8 @@ FastQSPWindow::~FastQSPWindow()
 
 bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
 {
-    QMainWindow::eventFilter(obj, e);
-    if(e->type() == QEvent::MouseButtonPress)
-    {
-        if(((QMouseEvent *)e)->button() != Qt::LeftButton)
-            return true;
-    }
-    if(e->type() == QEvent::DragEnter ||
-       e->type() == QEvent::DragMove ||
-       e->type() == QEvent::DragLeave ||
-       e->type() == QEvent::DragResponse ||
-       e->type() == QEvent::Drop)
-    {
+    if(e->type() == QEvent::ContextMenu)
         return true;
-    }
     return false;
 }
 
