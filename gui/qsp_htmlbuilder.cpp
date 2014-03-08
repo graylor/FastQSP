@@ -70,7 +70,13 @@ void QSP_HTMLBuilder::updateBaseStyle()
 void QSP_HTMLBuilder::updateScripts()
 {
     if(scripts.isEmpty())
+    {
         scripts = QLatin1String("window.onload=function(){var msg = document.getElementById('__message__');var bgImage = new Image();bgImage.src = msg.style.backgroundImage.replace(/url\\((['\\\"])?(.*?)\\1\\)/gi, '$2').split(',')[0]; bgImage.onload=function(){msg.style.width = bgImage.width;msg.style.height = bgImage.height;}};");
+        // onDomReady from https://github.com/tubalmartin/ondomready
+        scripts += "\n<!--onDomReady from https://github.com/tubalmartin/ondomready-->\n";
+        scripts += ";(function(a){\"function\"==typeof define&&define.amd?define(a):window['onDomReady']=a()}(function(){\"use strict\";function s(a){if(!q){if(!b.body)return v(s);for(q=!0;a=r.shift();)v(a)}}function t(a){(o||a.type===d||b[h]===g)&&(u(),s())}function u(){o?(b[n](l,t,e),a[n](d,t,e)):(b[j](m,t),a[j](f,t))}function v(a,b){setTimeout(a,+b>=0?b:1)}function x(a){q?v(a):r.push(a)}var a=window,b=a.document,c=b.documentElement,d=\"load\",e=!1,f=\"on\"+d,g=\"complete\",h=\"readyState\",i=\"attachEvent\",j=\"detachEvent\",k=\"addEventListener\",l=\"DOMContentLoaded\",m=\"onreadystatechange\",n=\"removeEventListener\",o=k in b,p=e,q=e,r=[];if(b[h]===g)v(s);else if(o)b[k](l,t,e),a[k](d,t,e);else{b[i](m,t),a[i](f,t);try{p=null==a.frameElement&&c}catch(w){}p&&p.doScroll&&function y(){if(!q){try{p.doScroll(\"left\")}catch(a){return v(y,50)}u(),s()}}()}return x.version=\"1.4.0\",x.isReady=function(){return q},x}));";
+        scripts += "onDomReady(function() {images = document.getElementsByTagName('img');for(i=0; images[i]; i++){images[i].onerror = function() {this.onerror = null;this.style.visibility = 'hidden';}}});";
+    }
 }
 
 void QSP_HTMLBuilder::updateMain()
