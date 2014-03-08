@@ -311,7 +311,7 @@ void FastQSPWindow::linkClicked(const QUrl & url)
 void FastQSPWindow::playAudio(QString filename, int vol)
 {
     filename = filename.replace('\\', '/');
-    if(QFile(filename).exists())
+    if(QFile(filename).exists() && media->state() != Phonon::PlayingState)
     {
         qDebug() << "playing:" << QFileInfo(filename).filePath() << vol;
         audioOutput->setVolume(qreal(vol) / qreal(100));
