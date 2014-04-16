@@ -4,7 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit webkitwidgets phonon
+QT += core gui webkit webkitwidgets
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia
+else: QT += phonon
 
 TARGET = FastQSP
 TEMPLATE = app

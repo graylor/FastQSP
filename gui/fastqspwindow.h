@@ -4,6 +4,7 @@
 #include "qsp_default.h"
 #include "qsp_htmlbuilder.h"
 
+#include <qglobal.h>
 #include <QApplication>
 #include <QMainWindow>
 #include <QResizeEvent>
@@ -18,8 +19,6 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QBoxLayout>
-#include <Phonon/MediaObject>
-#include <Phonon/AudioOutput>
 #include <QFontDatabase>
 #include <QLabel>
 #include <QGraphicsScene>
@@ -27,6 +26,14 @@
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QDesktopServices>
+
+#if QT_VERSION < 0x050000
+#include <Phonon/MediaObject>
+#include <Phonon/AudioOutput>
+#else
+#include <QMediaPlayer>
+#endif
+
 
 class FastQSPWindow : public QMainWindow
 {
@@ -75,8 +82,12 @@ private:
     qreal aspectRatio;
     qreal scaleFactor;
     bool gameIsOpen;
+    #if QT_VERSION < 0x050000
     Phonon::MediaObject *media;
     Phonon::AudioOutput *audioOutput;
+    #else
+    QMediaPlayer *player;
+    #endif
     QDir saveDir;
     void loadFonts();
     void loadPage();

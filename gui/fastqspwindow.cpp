@@ -9,12 +9,16 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     gameHeight(600),
     aspectRatio(qreal(gameWidth) / qreal(gameHeight)),
     scaleFactor(1),
-    gameIsOpen(false),
-    media(new Phonon::MediaObject(this)),
-    audioOutput(new Phonon::AudioOutput(Phonon::MusicCategory, this))
+    gameIsOpen(false)
 {
     // Init audio
+    #if QT_VERSION < 0x050000
+    media = new Phonon::MediaObject(this);
+    audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
     Phonon::createPath(media, audioOutput);
+    #else
+    player = new QMediaPlayer();
+    #endif
 
     // Init view
     scene = new QGraphicsScene(this);
@@ -79,7 +83,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     autosaveAction = new QAction("Autosave", this);
     autosaveAction->setCheckable(true);
     autosaveAction->setChecked(false);
-    //gameMenu->addAction(autosave);
+    //gameMenu->addAction(autosave);QMediaPlayer
 
     menuBar()->addMenu(gameMenu);
     gameMenu->setDisabled(true);
@@ -302,6 +306,7 @@ void FastQSPWindow::linkClicked(const QUrl & url)
 void FastQSPWindow::playAudio(QString filename, int vol)
 {
     filename = filename.replace('\\', '/');
+    #if QT_VERSION < 0x050000
     if(QFile(filename).exists() && media->state() != Phonon::PlayingState)
     {
         qDebug() << "playing:" << QFileInfo(filename).filePath() << vol;
@@ -309,11 +314,24 @@ void FastQSPWindow::playAudio(QString filename, int vol)
         media->setCurrentSource(QUrl::fromLocalFile(QFileInfo(filename).filePath()));
         media->play();
     }
+    #else
+    if(QFile(filename).exists() && player->state() != QMediaPlayer::PlayingState)
+    {
+        qDebug() << "playing:" << QFileInfo(filename).filePath() << vol;
+        player->setMedia(QUrl::fromLocalFile(QFileInfo(filename).filePath()));
+        player->setVolume(vol);
+        player->play();
+    }
+    #endif
 }
 
 void FastQSPWindow::stopAudio()
 {
+    #if QT_VERSION < 0x050000
     media->stop();
+    #else
+    player->stop();
+    #endif
 }
 
 void FastQSPWindow::openFile(const QString &filename)
