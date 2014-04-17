@@ -201,9 +201,10 @@ void QSP_HTMLBuilder::updateStyle()
 {
     stylesheet = getStringVariable(L"STYLESHEET");
     stylesheet = stylesheet.replace("%","");
-    QRegExp *re = new QRegExp(
-                "background-image:(.*);",
-                Qt::CaseInsensitive);
+    QRegExp *re = new QRegExp("background-image:(.*);",
+                              Qt::CaseInsensitive);
+    QRegExp *validUrl = new QRegExp("url\\(.*\\)",
+                                    Qt::CaseInsensitive);
     re->setMinimal(true);
     int pos = 0;
     while((pos = re->indexIn(stylesheet, pos)) > 0)
@@ -212,12 +213,14 @@ void QSP_HTMLBuilder::updateStyle()
                                                             QLatin1String("file:///") %
                                                             directory %
                                                             QLatin1String("content"));
-
-        stylesheet = stylesheet.replace(pos, re->matchedLength(),
-                                        QLatin1String("background-image:url('") +
-                                        url + "');");
+        if(!validUrl->exactMatch(url.trimmed())) {
+            stylesheet = stylesheet.replace(pos, re->matchedLength(),
+                                            QLatin1String("background-image:url('") %
+                                            url % "');");
+        }
         pos += re->matchedLength();
     }
+    delete validUrl;
     delete re;
 
     stylesheet = QLatin1String("<link rel='stylesheet' type='text/css' href='data:text/css;charset=utf-8;base64,") +
