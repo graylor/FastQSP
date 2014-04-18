@@ -212,11 +212,14 @@ void QSP_HTMLBuilder::updateStyle()
                                                             QLatin1String("file:///") %
                                                             directory %
                                                             QLatin1String("content"));
-        if(!validUrl->exactMatch(url.trimmed())) {
+        if(!validUrl->exactMatch(url.trimmed()))
             stylesheet = stylesheet.replace(pos, re->matchedLength(),
                                             QLatin1String("background-image:url('") %
                                             url % "');");
-        }
+        else
+            stylesheet = stylesheet.replace(pos, re->matchedLength(),
+                                            QLatin1String("background-image:") %
+                                            url % ";");
         pos += re->matchedLength();
     }
     delete validUrl;
