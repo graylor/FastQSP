@@ -200,7 +200,6 @@ const QString QSP_HTMLBuilder::getIntegerVariable(const wchar_t *name) const
 void QSP_HTMLBuilder::updateStyle()
 {
     stylesheet = getStringVariable(L"STYLESHEET");
-    stylesheet = stylesheet.replace("%","");
     QRegExp *re = new QRegExp("background-image:(.*);",
                               Qt::CaseInsensitive);
     QRegExp *validUrl = new QRegExp("url\\(.*\\)",
