@@ -2,6 +2,7 @@
 
 void QSPCallback::QSPCallback()
 {
+    qDebug() << QSP_CALL_SHOWMSGSTR;
     QSPSetCallBack(
                 QSP_CALL_DEBUG,
                 (QSP_CALLBACK)&QSPCallback::debug);
@@ -164,8 +165,8 @@ void QSPCallback::sleep(int msecs)
 
 int QSPCallback::getMsCount()
 {
-    qDebug() << "getMsCount()";
-    return 0;
+    qDebug() << "getMsCount()" << qspWin->getTimeFromStart();
+    return qspWin->getTimeFromStart();
 }
 
 void QSPCallback::callInputBox(const QSP_CHAR *text, QSP_CHAR *buffer, int maxLen)

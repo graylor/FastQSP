@@ -83,7 +83,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     autosaveAction = new QAction("Autosave", this);
     autosaveAction->setCheckable(true);
     autosaveAction->setChecked(false);
-    //gameMenu->addAction(autosave);QMediaPlayer
+    //gameMenu->addAction(autosave);
 
     menuBar()->addMenu(gameMenu);
     gameMenu->setDisabled(true);
@@ -158,6 +158,11 @@ bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
 void FastQSPWindow::toggleUpdate()
 {
     graphicsView->setUpdatesEnabled(!graphicsView->updatesEnabled());
+}
+
+int FastQSPWindow::getTimeFromStart()
+{
+    return timer.elapsed();
 }
 
 void FastQSPWindow::toggleFullscreen()
@@ -342,6 +347,7 @@ void FastQSPWindow::openFile(const QString &filename)
         qCritical() << QString("Could not open file: ") << filename;
     if(QSPRestartGame(QSP_TRUE))
     {
+        timer.start();
         gameMenu->setEnabled(true);
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
         builder.setGameDir(gameDirectory);

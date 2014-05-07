@@ -45,6 +45,7 @@ public:
     void playAudio(QString filename, int vol);
     void stopAudio();
     void refreshView();
+    int getTimeFromStart();
     QSP_HTMLBuilder builder;
 signals:
 
@@ -88,6 +89,7 @@ private:
     #else
     QMediaPlayer *player;
     #endif
+    QTime timer;
     QDir saveDir;
     void loadFonts();
     void loadPage();
