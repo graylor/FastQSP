@@ -20,6 +20,9 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     player = new QMediaPlayer();
     #endif
 
+    // Start timer
+    timer.start();
+
     // Init view
     scene = new QGraphicsScene(this);
     graphicsView = new QGraphicsView(scene, this);
@@ -346,8 +349,7 @@ void FastQSPWindow::openFile(const QString &filename)
     if(!QSPLoadGameWorld(filename.toStdWString().c_str()))
         qCritical() << QString("Could not open file: ") << filename;
     if(QSPRestartGame(QSP_TRUE))
-    {
-        timer.start();
+    {        
         gameMenu->setEnabled(true);
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
         builder.setGameDir(gameDirectory);
@@ -382,6 +384,7 @@ void FastQSPWindow::openFile(const QString &filename)
         if (!saveDir.exists()) {
             saveDir.mkpath(".");
         }
+        timer.restart();
     }
 }
 

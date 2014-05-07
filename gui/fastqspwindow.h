@@ -26,6 +26,7 @@
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QDesktopServices>
+#include <QTime>
 
 #if QT_VERSION < 0x050000
 #include <Phonon/MediaObject>

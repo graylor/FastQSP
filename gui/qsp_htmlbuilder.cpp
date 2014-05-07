@@ -208,10 +208,11 @@ void QSP_HTMLBuilder::updateStyle()
     int pos = 0;
     while((pos = re->indexIn(stylesheet, pos)) > 0)
     {
-        QString url = re->cap(1).replace('\\', '/').replace("content",
-                                                            QLatin1String("file:///") %
-                                                            directory %
-                                                            QLatin1String("content"));
+        QString url = re->cap(1).replace('\\', '/')
+                                .replace("content",
+                                         QLatin1String("file:///") %
+                                         directory %
+                                         QLatin1String("content"));
         if(!validUrl->exactMatch(url.trimmed()))
             stylesheet = stylesheet.replace(pos, re->matchedLength(),
                                             QLatin1String("background-image:url('") %
