@@ -1,6 +1,7 @@
 #include "qsp_callback.h"
 #include "qsp_default.h"
 #include "fastqspwindow.h"
+#include <QIcon>
 
 
 FastQSPWindow::FastQSPWindow(QWidget *parent) :
@@ -370,18 +371,29 @@ void FastQSPWindow::openFile(const QString &filename)
             configFile.close();
 
             QRegExp re;
-            re.setPattern("width=\"(\\d+)\"");
-            re.indexIn(config);
-            gameWidth = re.cap(1).toInt();
+            re.setMinimal(true);
 
+            re.setPattern("width=\"(\\d+)\"");
+            if(re.indexIn(config))
+                gameWidth = re.cap(1).toInt();
+            else
+                gameWidth = 800;
             re.setPattern("height=\"(\\d+)\"");
-            re.indexIn(config);
-            gameHeight = re.cap(1).toInt();
+            if(re.indexIn(config) > 0)
+                gameHeight = re.cap(1).toInt();
+            else
+                gameHeight = 600;
+            aspectRatio = qreal(gameWidth) / qreal(gameHeight);
 
             re.setPattern("title=\"(.+)\"");
-            re.indexIn(config);
-            setWindowTitle(re.cap(1));
+            if(re.indexIn(config) >= 0)
+                setWindowTitle(re.cap(1));
+            else
+                setWindowTitle("FastQSP");
 
+            re.setPattern("icon=\"(.+)\"");
+            if(re.indexIn(config) >= 0)
+                QApplication::setWindowIcon(QIcon(gameDirectory + re.cap(1)));
         }
         aspectRatio = qreal(gameWidth) / qreal(gameHeight);
         loadPage();        
