@@ -17,6 +17,7 @@ CONFIG(release, debug|release): OBJ_DIR = release
 else: CONFIG(debug, debug|release): OBJ_DIR = debug
 
 # Input
+INCLUDEPATH += .
 HEADERS += actions.h \
            callbacks.h \
            codetools.h \
@@ -48,7 +49,7 @@ HEADERS += actions.h \
            bindings/default/qsp_default.h \
            bindings/flash/flash.h \
            bindings/java/java.h \
-    time_qsp.h
+           time_qsp.h
 SOURCES += actions.c \
            callbacks.c \
            codetools.c \
@@ -98,4 +99,4 @@ SOURCES += actions.c \
            onig/enc/utf16_le.c \
            onig/enc/utf32_be.c \
            onig/enc/utf32_le.c \
-    time_qsp.c
+           time_qsp.c
