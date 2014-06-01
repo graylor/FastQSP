@@ -294,6 +294,11 @@ void FastQSPWindow::linkClicked(const QUrl & url)
         builder.hideMessage();
     }
     else
+    if(url.toString().toLower() == QLatin1String("restart"))
+    {
+        restartGame();
+    }
+    else
     if(url.toString().startsWith(QLatin1String("http"), Qt::CaseInsensitive) ||
        url.toString().startsWith(QLatin1String("mailto"), Qt::CaseInsensitive))
     {
