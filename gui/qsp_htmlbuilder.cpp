@@ -58,7 +58,7 @@ void QSP_HTMLBuilder::updateBaseStyle()
     baseStyle =
             QLatin1String("*{padding:0;margin:0;} a{text-decoration:none;outline:0;") %
             (messageTexts.empty()?QLatin1String(""):QLatin1String("pointer-events: none;cursor: default;")) %
-            ("} body{white-space: pre-wrap;-webkit-user-select:none;cursor:default;background-size:cover;background: url('") %
+            ("}#__message__ a{pointer-events: auto; cursor: pointer;} body{white-space: pre-wrap;-webkit-user-select:none;cursor:default;background-size:cover;background: url('") %
             getStringVariable(L"BACKIMAGE") %
             QLatin1String("')no-repeat;font-family:") %
             getStringVariable(L"FNAME") %
@@ -77,6 +77,19 @@ void QSP_HTMLBuilder::updateScripts()
         scripts += ";(function(a){\"function\"==typeof define&&define.amd?define(a):window['onDomReady']=a()}(function(){\"use strict\";function s(a){if(!q){if(!b.body)return v(s);for(q=!0;a=r.shift();)v(a)}}function t(a){(o||a.type===d||b[h]===g)&&(u(),s())}function u(){o?(b[n](l,t,e),a[n](d,t,e)):(b[j](m,t),a[j](f,t))}function v(a,b){setTimeout(a,+b>=0?b:1)}function x(a){q?v(a):r.push(a)}var a=window,b=a.document,c=b.documentElement,d=\"load\",e=!1,f=\"on\"+d,g=\"complete\",h=\"readyState\",i=\"attachEvent\",j=\"detachEvent\",k=\"addEventListener\",l=\"DOMContentLoaded\",m=\"onreadystatechange\",n=\"removeEventListener\",o=k in b,p=e,q=e,r=[];if(b[h]===g)v(s);else if(o)b[k](l,t,e),a[k](d,t,e);else{b[i](m,t),a[i](f,t);try{p=null==a.frameElement&&c}catch(w){}p&&p.doScroll&&function y(){if(!q){try{p.doScroll(\"left\")}catch(a){return v(y,50)}u(),s()}}()}return x.version=\"1.4.0\",x.isReady=function(){return q},x}));";
         scripts += "onDomReady(function() {images = document.getElementsByTagName('img');for(i=0; images[i]; i++){images[i].onerror = function() {this.onerror = null;this.style.visibility = 'hidden';}}});";
     }
+}
+
+void QSP_HTMLBuilder::clear()
+{
+    baseStyle.clear();
+    stylesheet.clear();
+    scripts.clear();
+    main.clear();
+    objects.clear();
+    message.clear();
+    messageTexts.clear();
+    actions.clear();
+    mainDesc.clear();
 }
 
 void QSP_HTMLBuilder::updateMain()
@@ -117,7 +130,7 @@ void QSP_HTMLBuilder::updateMessage()
             getIntegerVariable(L"MSG_TEXT_H") %
             QLatin1String(";'>") %
             getStringVariable(L"MSG_FORMAT") %
-            QLatin1String("</div><a href='msgclose' style='pointer-events:auto;cursor:pointer;'><img src='") %
+            QLatin1String("</div><a href='msgclose'><img src='") %
             getStringVariable(L"MSG_OK_IMAGE") %
             QLatin1String("' style='position:absolute;top:") %
             getIntegerVariable(L"MSG_OK_Y") %

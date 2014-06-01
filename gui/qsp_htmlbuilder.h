@@ -25,6 +25,7 @@ public:
     void updateStyle();
     void showMessage(const QString text);
     void hideMessage();
+    void clear();
 
 private:
     QString directory;
