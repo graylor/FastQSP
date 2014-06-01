@@ -241,6 +241,7 @@ void FastQSPWindow::loadGameDialog()
 void FastQSPWindow::loadGame(const QString &filename)
 {
     qDebug() << "Loading game from" << filename;
+    builder.clear();
     if(!filename.isEmpty() &&
         QSPOpenSavedGame(filename.toStdWString().c_str(), true))
     {
@@ -252,6 +253,7 @@ void FastQSPWindow::loadGame(const QString &filename)
 void FastQSPWindow::restartGame()
 {
     QSPRestartGame(true);
+    builder.clear();
     loadPage();
 }
 
@@ -344,12 +346,13 @@ void FastQSPWindow::stopAudio()
 
 void FastQSPWindow::openFile(const QString &filename)
 {
+    builder.clear();
     if(gameIsOpen)
         autosave();
     if(!QSPLoadGameWorld(filename.toStdWString().c_str()))
         qCritical() << QString("Could not open file: ") << filename;
     if(QSPRestartGame(QSP_TRUE))
-    {        
+    {
         gameMenu->setEnabled(true);
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
         builder.setGameDir(gameDirectory);
