@@ -46,10 +46,10 @@
 	static int qspEndiannessTestValue = 1;
 
 	#ifdef _UNICODE
-		#ifdef _MSC_VER
+        #ifdef _WIN32
 			#define QSP_FOPEN _wfopen
 		#else
-			#define QSP_FOPEN qspFileOpen
+            #define QSP_FOPEN qspFileOpen
 		#endif
 		#define QSP_STRCOLL qspStrsComp
 		#define QSP_CHRLWR qspToWLower
