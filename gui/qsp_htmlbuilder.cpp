@@ -215,7 +215,7 @@ void QSP_HTMLBuilder::updateStyle()
     stylesheet = getStringVariable(L"STYLESHEET");
     QRegExp *re = new QRegExp("background-image:(.*);",
                               Qt::CaseInsensitive);
-    QRegExp *validUrl = new QRegExp("url\\(.*\\)",
+    QRegExp *validUrl = new QRegExp("url\\((.*)\\)",
                                     Qt::CaseInsensitive);
     re->setMinimal(true);
     int pos = 0;
@@ -232,8 +232,8 @@ void QSP_HTMLBuilder::updateStyle()
                                             url % "');");
         else
             stylesheet = stylesheet.replace(pos, re->matchedLength(),
-                                            QLatin1String("background-image:") %
-                                            url % ";");
+                                            QLatin1String("background-image:url('") %
+                                            validUrl->cap(1) % "');");
         pos += re->matchedLength();
     }
     delete validUrl;
