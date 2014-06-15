@@ -53,15 +53,15 @@ signals:
 public slots:
     void saveGame(const QString &filename);
     void saveGameDialog();
+    void openFileDialog();
 
 protected:
     void timerEvent(QTimerEvent * event);
     void resizeEvent(QResizeEvent * event);
-    bool eventFilter(QObject * obj, QEvent *e);
+    bool eventFilter(QObject *, QEvent *e);
     void closeEvent(QCloseEvent * event);
 
-private slots:
-    void openFileDialog();
+private slots:    
     void about();
     void showHtml();
     void autosave();

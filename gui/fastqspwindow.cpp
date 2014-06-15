@@ -152,7 +152,7 @@ FastQSPWindow::~FastQSPWindow()
     QSPDeInit();
 }
 
-bool FastQSPWindow::eventFilter(QObject * obj, QEvent *e)
+bool FastQSPWindow::eventFilter(QObject * /*obj*/, QEvent *e)
 {
     if(e->type() == QEvent::ContextMenu)
         return true;
@@ -428,12 +428,12 @@ void FastQSPWindow::autosave()
     saveGame(saveDir.absolutePath() + "/auto.sav");
 }
 
-void FastQSPWindow::resizeEvent(QResizeEvent *event)
+void FastQSPWindow::resizeEvent(QResizeEvent * /*event*/)
 {
     graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
-void FastQSPWindow::closeEvent(QCloseEvent *event)
+void FastQSPWindow::closeEvent(QCloseEvent * /*event*/)
 {
     if(gameIsOpen)
         autosave();

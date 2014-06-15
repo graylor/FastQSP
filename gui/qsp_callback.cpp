@@ -156,6 +156,11 @@ void QSPCallback::system(const QSP_CHAR *str)
 void QSPCallback::openGameStatus(const QSP_CHAR *file)
 {
     qDebug() << "openGameStatus(), str: " << QString::fromWCharArray(file);
+    QString filename(QString::fromWCharArray(file));
+    if(filename.isEmpty())
+        qspWin->openFileDialog();
+    else
+        qspWin->openFile(filename);
 }
 
 void QSPCallback::saveGameStatus(const QSP_CHAR *file)
