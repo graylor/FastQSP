@@ -1,4 +1,9 @@
 #include "qsp_callback.h"
+#ifdef __GNUC__
+#include <unistd.h>
+#elif _MSC_VER
+#include <windows.h>
+#endif
 
 void QSPCallback::QSPCallback()
 {
@@ -156,11 +161,22 @@ void QSPCallback::openGameStatus(const QSP_CHAR *file)
 void QSPCallback::saveGameStatus(const QSP_CHAR *file)
 {
     qDebug() << "saveGameStatus(), str: " << QString::fromWCharArray(file);
+    QString filename(QString::fromWCharArray(file));
+    if(filename.isEmpty())
+        qspWin->saveGameDialog();
+    else
+        qspWin->saveGame(filename);
 }
 
 void QSPCallback::sleep(int msecs)
 {
     qDebug() << "sleep(), msecs: " << msecs;
+    #ifdef _MSC_VER
+    Sleep(msecs);
+    #elif __GNUC__
+    usleep(1000 * msecs);
+    #endif
+
 }
 
 int QSPCallback::getMsCount()

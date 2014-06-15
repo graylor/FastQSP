@@ -51,6 +51,8 @@ public:
 signals:
 
 public slots:
+    void saveGame(const QString &filename);
+    void saveGameDialog();
 
 protected:
     void timerEvent(QTimerEvent * event);
@@ -62,9 +64,7 @@ private slots:
     void openFileDialog();
     void about();
     void showHtml();
-    void saveGameDialog();
     void autosave();
-    void saveGame(const QString &filename);
     void loadGameDialog();
     void loadGame(const QString &filename);
     void restartGame();
