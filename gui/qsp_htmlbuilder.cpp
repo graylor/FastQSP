@@ -225,15 +225,21 @@ void QSP_HTMLBuilder::updateStyle()
                                 .replace("content",
                                          QLatin1String("file:///") %
                                          directory %
-                                         QLatin1String("content"));
-        if(!validUrl->exactMatch(url.trimmed()))
+                                         QLatin1String("content")).trimmed();
+        if(!validUrl->exactMatch(url))
+        {
             stylesheet = stylesheet.replace(pos, re->matchedLength(),
                                             QLatin1String("background-image:url('") %
-                                            url % "');");
+                                            removeQuotes(url) %
+                                            QLatin1String("');"));
+        }
         else
+        {
             stylesheet = stylesheet.replace(pos, re->matchedLength(),
                                             QLatin1String("background-image:url('") %
-                                            validUrl->cap(1) % "');");
+                                            removeQuotes(validUrl->cap(1)) %
+                                            QLatin1String("');"));
+        }
         pos += re->matchedLength();
     }
     delete validUrl;
@@ -262,4 +268,13 @@ void QSP_HTMLBuilder::showMessage(const QString text)
 void QSP_HTMLBuilder::hideMessage()
 {
     messageTexts.dequeue();
+}
+
+QString QSP_HTMLBuilder::removeQuotes(const QString& str)
+{
+    if((str[0] == '\'' && str[0] == str[str.length() - 1]) ||
+       (str[0] == '"' && str[0] == str[str.length() - 1]))
+        return str.mid(1, str.length() - 2);
+    else
+        return str;
 }

@@ -44,6 +44,7 @@ private:
     const QString getStringVariable(const wchar_t *name) const;
     const QString getIntegerVariable(const wchar_t *name) const;
     void updateMainDesc();
+    static QString removeQuotes(const QString &);
 };
 
 #endif // QSP_HTMLBUILDER_H
