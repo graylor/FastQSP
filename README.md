@@ -1,3 +1,3 @@
 FastQSP
 =======
-<a href="https://yadi.sk/d/Oo__I6Q-TwZDz">Latest version</a>
+You can download latest release in releases section.
