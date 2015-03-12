@@ -168,10 +168,7 @@ void QSP_HTMLBuilder::updateObjects()
                 QLatin1String("<a href=\"obj:") %
                 QString::number(ind) %
                 QLatin1String("\">") %
-                QString::fromWCharArray(desc)
-                .replace("content", QLatin1String("file:///") %
-                         directory %
-                         QLatin1String("content")) %
+                QString::fromWCharArray(desc) %
                 QLatin1String("</a><br />\n");
     }
     objects = objects + QLatin1String("</div>");
@@ -193,7 +190,7 @@ const QString QSP_HTMLBuilder::getStringVariable(const wchar_t *name) const
     // TODO: TEMP: add search in list of posible path variables
     if(str.startsWith("content"))
     {
-        return "file:///" + directory + str.replace('\\', '/').trimmed();
+        return str.replace('\\', '/').trimmed();
     }
     return str;
 }
@@ -221,11 +218,7 @@ void QSP_HTMLBuilder::updateStyle()
     int pos = 0;
     while((pos = re->indexIn(stylesheet, pos)) > 0)
     {
-        QString url = re->cap(1).replace('\\', '/')
-                                .replace("content",
-                                         QLatin1String("file:///") %
-                                         directory %
-                                         QLatin1String("content")).trimmed();
+        QString url = re->cap(1).replace('\\', '/').trimmed();
         if(!validUrl->exactMatch(url))
         {
             stylesheet = stylesheet.replace(pos, re->matchedLength(),
@@ -254,10 +247,7 @@ void QSP_HTMLBuilder::updateMainDesc()
 {
     if(QSPIsMainDescChanged())
         mainDesc = QString::fromWCharArray(QSPGetMainDesc())
-                .replace("\r\n", "<br>")
-                .replace("content", QLatin1String("file:///") %
-                         directory %
-                         QLatin1String("content"));
+                .replace("\r\n", "<br>");
 }
 
 void QSP_HTMLBuilder::showMessage(const QString text)

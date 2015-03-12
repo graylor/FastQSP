@@ -10,7 +10,8 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     gameHeight(600),
     aspectRatio(qreal(gameWidth) / qreal(gameHeight)),
     scaleFactor(1),
-    gameIsOpen(false)
+    gameIsOpen(false),
+    netManager()
 {
     // Init audio
     #if QT_VERSION < 0x050000
@@ -32,6 +33,7 @@ FastQSPWindow::FastQSPWindow(QWidget *parent) :
     graphicsView->setUpdatesEnabled(true);
 
     webView  = new QGraphicsWebView();
+    webView->page()->setNetworkAccessManager(&netManager);
     webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     scene->addItem(webView);
     scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
@@ -299,22 +301,32 @@ void FastQSPWindow::linkClicked(const QUrl & url)
     {
         restartGame();
     }
-    else
-    if(url.toString().startsWith(QLatin1String("http"), Qt::CaseInsensitive) ||
-       url.toString().startsWith(QLatin1String("mailto"), Qt::CaseInsensitive))
+    else if(url.host() == QLatin1String("qspgame.local"))
     {
-        QDesktopServices::openUrl(url);
-    }
-    else
-    {
+        QString path = url.path();
+        path.remove(0, 1);
+        qDebug() << path;
         bool ok = false;
         int number;
-        number = url.toString().toInt(&ok);
+        number = path.toUInt(&ok);
         if(ok)
         {
             QSPSetSelActionIndex(number - 1, true);
             QSPExecuteSelActionCode(true);
         }
+        else
+        {
+            qWarning() << QLatin1String("Bad link path:") << path;
+        }
+    } else
+    if(url.scheme() == QLatin1String("http") ||
+       url.scheme() == QLatin1String("mailto"))
+    {
+        QDesktopServices::openUrl(url);
+    }
+    else
+    {
+        qWarning() << QLatin1String("Bad link:") << url.toString();
     }
     loadPage();
 }
@@ -362,6 +374,7 @@ void FastQSPWindow::openFile(const QString &filename)
         gameMenu->setEnabled(true);
         gameDirectory = QFileInfo(filename).absolutePath() + "/";
         builder.setGameDir(gameDirectory);
+        netManager.setGameDirectory(gameDirectory);
         loadFonts();
         QFile configFile(gameDirectory + QLatin1String("config.xml"));
         if(configFile.open(QFile::ReadOnly))
@@ -417,7 +430,7 @@ void FastQSPWindow::refreshView()
 
 void FastQSPWindow::loadPage()
 {
-   webView->setHtml(builder.getHTML());
+   webView->setHtml(builder.getHTML(), QUrl("http://qspgame.local"));
    if(autosaveAction->isChecked())
        autosave();
 }

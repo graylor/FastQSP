@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui webkit webkitwidgets
+QT += core gui webkit webkitwidgets network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia
 else: QT += phonon
@@ -19,14 +19,16 @@ win32: DEFINES+= _WIN
 SOURCES += main.cpp\
     qsp_callback.cpp \
     fastqspwindow.cpp \
-    qsp_htmlbuilder.cpp
+    qsp_htmlbuilder.cpp \
+    local_requsts_proxy.cpp
 
 HEADERS  += \
     qsp.h \
     qsp_default.h \
     qsp_callback.h \
     fastqspwindow.h \
-    qsp_htmlbuilder.h
+    qsp_htmlbuilder.h \
+    local_requsts_proxy.h
 
 CONFIG(release, debug|release): DESTDIR = release
 else: CONFIG(debug, debug|release): DESTDIR = debug
