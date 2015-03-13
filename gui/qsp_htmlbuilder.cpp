@@ -130,7 +130,7 @@ void QSP_HTMLBuilder::updateMessage()
             getIntegerVariable(L"MSG_TEXT_H") %
             QLatin1String(";'>") %
             getStringVariable(L"MSG_FORMAT") %
-            QLatin1String("</div><a href='msgclose'><img src='") %
+            QLatin1String("</div><a href='api/closemsg'><img src='") %
             getStringVariable(L"MSG_OK_IMAGE") %
             QLatin1String("' style='position:absolute;top:") %
             getIntegerVariable(L"MSG_OK_Y") %

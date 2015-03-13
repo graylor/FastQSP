@@ -292,7 +292,7 @@ void FastQSPWindow::linkClicked(const QUrl & url)
         QSPSetSelObjectIndex(number, true);
     }
     else
-    if(url.toString() == QLatin1String("msgclose"))
+    if(url.path() == QLatin1String("/api/closemsg"))
     {
         builder.hideMessage();
     }
