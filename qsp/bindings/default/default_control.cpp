@@ -477,9 +477,6 @@ void QSPSetCallBack(int type, QSP_CALLBACK func)
 /* Инициализация */
 void QSPInit()
 {
-	#ifdef _DEBUG
-		mwInit();
-	#endif
 	qspIsDebug = QSP_FALSE;
 	qspRefreshCount = qspFullRefreshCount = 0;
 	qspQstPath = qspQstFullPath = 0;
@@ -510,9 +507,6 @@ void QSPDeInit()
 	qspCreateWorld(0, 0);
 	if (qspQstPath) free(qspQstPath);
 	if (qspQstFullPath) free(qspQstFullPath);
-	#ifdef _DEBUG
-		mwTerm();
-	#endif
 }
 
 #endif

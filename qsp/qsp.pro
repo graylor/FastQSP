@@ -3,10 +3,9 @@ TARGET = qsp
 win32 {
     CONFIG += dll
     DEFINES+= _WIN
-#    QMAKE_CFLAGS += /TP
 } 
 
-DEFINES += NOT_RUBY EXPORT _UNICODE
+DEFINES += NOT_RUBY EXPORT _UNICODE _CRT_SECURE_NO_WARNINGS
 
 CONFIG(release, debug|release) {
     BUILDDIR = ../build/release
@@ -34,7 +33,6 @@ HEADERS += actions.h \
            game.h \
            locations.h \
            mathops.h \
-           memwatch.h \
            menu.h \
            objects.h \
            playlist.h \
@@ -50,36 +48,36 @@ HEADERS += actions.h \
            bindings/flash/flash.h \
            bindings/java/java.h \
            time_qsp.h
-SOURCES += actions.c \
-           callbacks.c \
-           codetools.c \
-           coding.c \
-           common.c \
-           errors.c \
-           game.c \
-           locations.c \
-           mathops.c \
-           memwatch.c \
-           menu.c \
-           objects.c \
-           playlist.c \
-           regexp.c \
-           statements.c \
-           text.c \
-           towlower.c \
-           towupper.c \
-           variables.c \
-           variant.c \
-           bindings/android/android_callbacks.c \
-           bindings/android/android_coding.c \
-           bindings/android/android_control.c \
-           bindings/default/default_callbacks.c \
-           bindings/default/default_coding.c \
-           bindings/default/default_control.c \
-           bindings/flash/flash_callbacks.c \
-           bindings/flash/flash_coding.c \
-           bindings/flash/flash_control.c \
-           bindings/java/java_callbacks.c \
-           bindings/java/java_coding.c \
-           bindings/java/java_control.c \
-           time_qsp.c
+SOURCES += \
+    actions.cpp \
+    callbacks.cpp \
+    codetools.cpp \
+    coding.cpp \
+    common.cpp \
+    errors.cpp \
+    game.cpp \
+    locations.cpp \
+    mathops.cpp \
+    menu.cpp \
+    objects.cpp \
+    playlist.cpp \
+    regexp.cpp \
+    statements.cpp \
+    text.cpp \
+    time_qsp.cpp \
+    towlower.cpp \
+    towupper.cpp \
+    variables.cpp \
+    variant.cpp \
+    bindings/android/android_callbacks.cpp \
+    bindings/android/android_coding.cpp \
+    bindings/android/android_control.cpp \
+    bindings/default/default_callbacks.cpp \
+    bindings/default/default_coding.cpp \
+    bindings/default/default_control.cpp \
+    bindings/flash/flash_callbacks.cpp \
+    bindings/flash/flash_coding.cpp \
+    bindings/flash/flash_control.cpp \
+    bindings/java/java_callbacks.cpp \
+    bindings/java/java_coding.cpp \
+    bindings/java/java_control.cpp

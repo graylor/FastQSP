@@ -31,7 +31,7 @@
 	int qspAddText(QSP_CHAR **, QSP_CHAR *, int, int, QSP_BOOL);
 	QSP_CHAR *qspGetNewText(QSP_CHAR *, int);
 	QSP_CHAR *qspGetAddText(QSP_CHAR *, QSP_CHAR *, int, int);
-	QSP_BOOL qspClearText(void **, int *);
+    QSP_BOOL qspClearText(QSP_CHAR **, int *);
 	QSP_BOOL qspIsInList(QSP_CHAR *, QSP_CHAR);
 	QSP_BOOL qspIsInListEOL(QSP_CHAR *, QSP_CHAR);
 	QSP_BOOL qspIsDigit(QSP_CHAR);
@@ -54,7 +54,6 @@
 	QSP_CHAR *qspJoinStrs(QSP_CHAR **, int, QSP_CHAR *);
 	int qspSplitStr(QSP_CHAR *, QSP_CHAR *, QSP_CHAR ***);
 	void qspCopyStrs(QSP_CHAR ***, QSP_CHAR **, int, int);
-	void qspFreeStrs(void **, int);
 	QSP_BOOL qspIsNumber(QSP_CHAR *);
 	int qspStrToNum(QSP_CHAR *, QSP_BOOL *);
 	QSP_CHAR *qspNumToStr(QSP_CHAR *, int);
@@ -62,6 +61,16 @@
 	QSP_CHAR *qspStrPosPartial(QSP_CHAR *, QSP_CHAR *, QSP_CHAR *, QSP_BOOL);
 	QSP_CHAR *qspReplaceText(QSP_CHAR *, QSP_CHAR *, QSP_CHAR *);
 	QSP_CHAR *qspFormatText(QSP_CHAR *, QSP_BOOL);
+
+    template <typename CharType>
+    void qspFreeStrs(CharType **strs, int count)
+    {
+        if (strs)
+        {
+            while (--count >= 0) free(strs[count]);
+            free(strs);
+        }
+    }
 
 	#ifdef _UNICODE
 		int qspToWLower(int);

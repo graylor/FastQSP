@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS = qsp \
-          gui \
-          oniguruma
+CONFIG += ordered
 
+SUBDIRS += oniguruma
+SUBDIRS += qsp gui
