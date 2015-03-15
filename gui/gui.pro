@@ -3,6 +3,8 @@ QT += core gui webkit webkitwidgets network
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia
 else: QT += phonon
 
+CONFIG += c++11
+
 TARGET = FastQSP
 TEMPLATE = app
 

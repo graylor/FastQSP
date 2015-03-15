@@ -5,6 +5,8 @@ win32 {
     DEFINES+= _WIN
 } 
 
+CONFIG += c++11
+
 DEFINES += NOT_RUBY EXPORT _UNICODE _CRT_SECURE_NO_WARNINGS
 
 CONFIG(release, debug|release) {
