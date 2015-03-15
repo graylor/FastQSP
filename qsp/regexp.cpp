@@ -22,109 +22,97 @@
 int qspCompiledRegExpsCurInd = 0;
 QSPRegExp qspCompiledRegExps[QSP_MAXCACHEDREGEXPS];
 
-void qspClearRegExps(QSP_BOOL isFirst)
-{
-	int i;
-	QSPRegExp *exp = qspCompiledRegExps;
-	for (i = 0; i < QSP_MAXCACHEDREGEXPS; ++i)
-	{
-		if (!isFirst && exp->Text)
-		{
-			free(exp->Text);
-			onig_free(exp->CompiledExp);
-		}
-                exp->Text = nullptr;
-                exp->CompiledExp = nullptr;
-                ++exp;
-	}
-	qspCompiledRegExpsCurInd = 0;
+void qspClearRegExps(QSP_BOOL isFirst) {
+  int i;
+  QSPRegExp *exp = qspCompiledRegExps;
+  for (i = 0; i < QSP_MAXCACHEDREGEXPS; ++i) {
+    if (!isFirst && exp->Text) {
+      free(exp->Text);
+      onig_free(exp->CompiledExp);
+    }
+    exp->Text = nullptr;
+    exp->CompiledExp = nullptr;
+    ++exp;
+  }
+  qspCompiledRegExpsCurInd = 0;
 }
 
-regex_t *qspRegExpGetCompiled(QSP_CHAR *exp)
-{
-	int i;
-	regex_t *onigExp;
-	OnigUChar *tempBeg, *tempEnd;
-	OnigErrorInfo onigInfo;
-	QSPRegExp *compExp = qspCompiledRegExps;
-	for (i = 0; i < QSP_MAXCACHEDREGEXPS; ++i)
-	{
-		if (!compExp->Text) break;
-		if (!qspStrsComp(exp, compExp->Text))
-			return compExp->CompiledExp;
-		++compExp;
-	}
-	tempBeg = (OnigUChar *)exp;
-	tempEnd = (OnigUChar *)qspStrEnd(exp);
-	if (onig_new(&onigExp, tempBeg, tempEnd, ONIG_OPTION_DEFAULT, QSP_ONIG_ENC, ONIG_SYNTAX_PERL_NG, &onigInfo))
-	{
-		qspSetError(QSP_ERR_INCORRECTREGEXP);
-                return nullptr;
-        }
-	compExp = qspCompiledRegExps + qspCompiledRegExpsCurInd;
-	if (compExp->Text)
-	{
-		free(compExp->Text);
-		onig_free(compExp->CompiledExp);
-	}
-	compExp->Text = qspGetNewText(exp, -1);
-	compExp->CompiledExp = onigExp;
-	if (++qspCompiledRegExpsCurInd == QSP_MAXCACHEDREGEXPS)
-		qspCompiledRegExpsCurInd = 0;
-	return onigExp;
+regex_t *qspRegExpGetCompiled(QSP_CHAR *exp) {
+  int i;
+  regex_t *onigExp;
+  OnigUChar *tempBeg, *tempEnd;
+  OnigErrorInfo onigInfo;
+  QSPRegExp *compExp = qspCompiledRegExps;
+  for (i = 0; i < QSP_MAXCACHEDREGEXPS; ++i) {
+    if (!compExp->Text)
+      break;
+    if (!qspStrsComp(exp, compExp->Text))
+      return compExp->CompiledExp;
+    ++compExp;
+  }
+  tempBeg = (OnigUChar *)exp;
+  tempEnd = (OnigUChar *)qspStrEnd(exp);
+  if (onig_new(&onigExp, tempBeg, tempEnd, ONIG_OPTION_DEFAULT, QSP_ONIG_ENC,
+               ONIG_SYNTAX_PERL_NG, &onigInfo)) {
+    qspSetError(QSP_ERR_INCORRECTREGEXP);
+    return nullptr;
+  }
+  compExp = qspCompiledRegExps + qspCompiledRegExpsCurInd;
+  if (compExp->Text) {
+    free(compExp->Text);
+    onig_free(compExp->CompiledExp);
+  }
+  compExp->Text = qspGetNewText(exp, -1);
+  compExp->CompiledExp = onigExp;
+  if (++qspCompiledRegExpsCurInd == QSP_MAXCACHEDREGEXPS)
+    qspCompiledRegExpsCurInd = 0;
+  return onigExp;
 }
 
-QSP_BOOL qspRegExpStrMatch(regex_t *exp, QSP_CHAR *str)
-{
-	OnigUChar *tempBeg, *tempEnd;
-	tempBeg = (OnigUChar *)str;
-	tempEnd = (OnigUChar *)qspStrEnd(str);
-        return (onig_match(exp, tempBeg, tempEnd, tempBeg, nullptr,
-                           ONIG_OPTION_NONE) == tempEnd - tempBeg);
+QSP_BOOL qspRegExpStrMatch(regex_t *exp, QSP_CHAR *str) {
+  OnigUChar *tempBeg, *tempEnd;
+  tempBeg = (OnigUChar *)str;
+  tempEnd = (OnigUChar *)qspStrEnd(str);
+  return (onig_match(exp, tempBeg, tempEnd, tempBeg, nullptr,
+                     ONIG_OPTION_NONE) == tempEnd - tempBeg);
 }
 
-QSP_CHAR *qspRegExpStrFind(regex_t *exp, QSP_CHAR *str, int ind)
-{
-	QSP_CHAR *res;
-	int len, pos;
-	OnigUChar *tempBeg, *tempEnd;
-	OnigRegion *onigReg = onig_region_new();
-	tempBeg = (OnigUChar *)str;
-	tempEnd = (OnigUChar *)qspStrEnd(str);
-	if (onig_search(exp, tempBeg, tempEnd, tempBeg, tempEnd, onigReg, ONIG_OPTION_NONE) >= 0)
-	{
-		pos = (ind >= 0 ? ind : 0);
-		if (pos < onigReg->num_regs && onigReg->beg[pos] >= 0)
-		{
-			len = (onigReg->end[pos] - onigReg->beg[pos]) / sizeof(QSP_CHAR);
-			res = qspGetNewText((QSP_CHAR *)(tempBeg + onigReg->beg[pos]), len);
-		}
-		else
-			res = qspGetNewText(QSP_FMT(""), 0);
-	}
-	else
-		res = qspGetNewText(QSP_FMT(""), 0);
-	onig_region_free(onigReg, 1);
-	return res;
+QSP_CHAR *qspRegExpStrFind(regex_t *exp, QSP_CHAR *str, int ind) {
+  QSP_CHAR *res;
+  int len, pos;
+  OnigUChar *tempBeg, *tempEnd;
+  OnigRegion *onigReg = onig_region_new();
+  tempBeg = (OnigUChar *)str;
+  tempEnd = (OnigUChar *)qspStrEnd(str);
+  if (onig_search(exp, tempBeg, tempEnd, tempBeg, tempEnd, onigReg,
+                  ONIG_OPTION_NONE) >= 0) {
+    pos = (ind >= 0 ? ind : 0);
+    if (pos < onigReg->num_regs && onigReg->beg[pos] >= 0) {
+      len = (onigReg->end[pos] - onigReg->beg[pos]) / sizeof(QSP_CHAR);
+      res = qspGetNewText((QSP_CHAR *)(tempBeg + onigReg->beg[pos]), len);
+    } else
+      res = qspGetNewText(QSP_FMT(""), 0);
+  } else
+    res = qspGetNewText(QSP_FMT(""), 0);
+  onig_region_free(onigReg, 1);
+  return res;
 }
 
-int qspRegExpStrPos(regex_t *exp, QSP_CHAR *str, int ind)
-{
-	int pos, res;
-	OnigUChar *tempBeg, *tempEnd;
-	OnigRegion *onigReg = onig_region_new();
-	tempBeg = (OnigUChar *)str;
-	tempEnd = (OnigUChar *)qspStrEnd(str);
-	if (onig_search(exp, tempBeg, tempEnd, tempBeg, tempEnd, onigReg, ONIG_OPTION_NONE) >= 0)
-	{
-		pos = (ind >= 0 ? ind : 0);
-		if (pos < onigReg->num_regs && onigReg->beg[pos] >= 0)
-			res = onigReg->beg[pos] / sizeof(QSP_CHAR) + 1;
-		else
-			res = 0;
-	}
-	else
-		res = 0;
-	onig_region_free(onigReg, 1);
-	return res;
+int qspRegExpStrPos(regex_t *exp, QSP_CHAR *str, int ind) {
+  int pos, res;
+  OnigUChar *tempBeg, *tempEnd;
+  OnigRegion *onigReg = onig_region_new();
+  tempBeg = (OnigUChar *)str;
+  tempEnd = (OnigUChar *)qspStrEnd(str);
+  if (onig_search(exp, tempBeg, tempEnd, tempBeg, tempEnd, onigReg,
+                  ONIG_OPTION_NONE) >= 0) {
+    pos = (ind >= 0 ? ind : 0);
+    if (pos < onigReg->num_regs && onigReg->beg[pos] >= 0)
+      res = onigReg->beg[pos] / sizeof(QSP_CHAR) + 1;
+    else
+      res = 0;
+  } else
+    res = 0;
+  onig_region_free(onigReg, 1);
+  return res;
 }

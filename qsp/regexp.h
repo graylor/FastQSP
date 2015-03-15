@@ -17,26 +17,25 @@
 
 #include "declarations.h"
 #ifdef EXPORT
-    #undef EXPORT
+#undef EXPORT
 #endif
 #include "oniguruma.h"
 
 #ifndef QSP_REGEXPDEFINES
-	#define QSP_REGEXPDEFINES
+#define QSP_REGEXPDEFINES
 
-	#define QSP_MAXCACHEDREGEXPS 10
+#define QSP_MAXCACHEDREGEXPS 10
 
-	typedef struct
-	{
-		QSP_CHAR *Text;
-		regex_t *CompiledExp;
-	} QSPRegExp;
+typedef struct {
+  QSP_CHAR *Text;
+  regex_t *CompiledExp;
+} QSPRegExp;
 
-	/* External functions */
-	void qspClearRegExps(QSP_BOOL);
-	regex_t *qspRegExpGetCompiled(QSP_CHAR *);
-	QSP_BOOL qspRegExpStrMatch(regex_t *, QSP_CHAR *);
-	QSP_CHAR *qspRegExpStrFind(regex_t *, QSP_CHAR *, int);
-	int qspRegExpStrPos(regex_t *, QSP_CHAR *, int);
+/* External functions */
+void qspClearRegExps(QSP_BOOL);
+regex_t *qspRegExpGetCompiled(QSP_CHAR *);
+QSP_BOOL qspRegExpStrMatch(regex_t *, QSP_CHAR *);
+QSP_CHAR *qspRegExpStrFind(regex_t *, QSP_CHAR *, int);
+int qspRegExpStrPos(regex_t *, QSP_CHAR *, int);
 
 #endif

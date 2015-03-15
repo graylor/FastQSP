@@ -1,21 +1,20 @@
 #include "fastqspwindow.h"
 #include <QApplication>
 
-FastQSPWindow* qspWin;
+FastQSPWindow *qspWin;
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication::setApplicationName("FastQSP");
-    QCoreApplication::setApplicationVersion("v0.5.1");
+int main(int argc, char *argv[]) {
+  QCoreApplication::setApplicationName("FastQSP");
+  QCoreApplication::setApplicationVersion("v0.5.1");
 
-    QApplication a(argc, argv);
-    qspWin = new FastQSPWindow();
-    qspWin->resize(975, 630);
+  QApplication a(argc, argv);
+  qspWin = new FastQSPWindow();
+  qspWin->resize(975, 630);
 
-    qspWin->show();
+  qspWin->show();
 
-    if(argc > 1 && QFile(argv[1]).exists())
-        qspWin->openFile(argv[1]);
+  if (argc > 1 && QFile(argv[1]).exists())
+    qspWin->openFile(argv[1]);
 
-    return a.exec();
+  return a.exec();
 }

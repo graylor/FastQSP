@@ -18,19 +18,19 @@
 #include "declarations.h"
 
 #ifndef QSP_ERRSDEFINES
-	#define QSP_ERRSDEFINES
+#define QSP_ERRSDEFINES
 
-	extern int qspErrorNum;
-	extern int qspErrorLoc;
-	extern int qspErrorLine;
-	extern int qspErrorActIndex;
-	extern int qspRealCurLoc;
-	extern int qspRealLine;
-	extern int qspRealActIndex;
+extern int qspErrorNum;
+extern int qspErrorLoc;
+extern int qspErrorLine;
+extern int qspErrorActIndex;
+extern int qspRealCurLoc;
+extern int qspRealLine;
+extern int qspRealActIndex;
 
-	/* External functions */
-	void qspSetError(int);
-	void qspResetError();
-	QSP_CHAR *qspGetErrorDesc(int);
+/* External functions */
+void qspSetError(int);
+void qspResetError();
+QSP_CHAR *qspGetErrorDesc(int);
 
 #endif

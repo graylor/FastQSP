@@ -2,17 +2,18 @@
 #define LOCAL_REQUSTS_PROXY_H
 #include <QNetworkAccessManager>
 
-class LocalRequestsProxy : public QNetworkAccessManager
-{
+class LocalRequestsProxy : public QNetworkAccessManager {
 public:
-    void setGameDirectory(const QString& _gameDir);
+  void setGameDirectory(const QString &_gameDir);
 
-    // QNetworkAccessManager interface
+  // QNetworkAccessManager interface
 protected:
-    virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData);
+  virtual QNetworkReply *createRequest(Operation op,
+                                       const QNetworkRequest &request,
+                                       QIODevice *outgoingData);
+
 private:
-    QString gameDir;
+  QString gameDir;
 };
 
 #endif // LOCAL_REQUSTS_PROXY_H
-

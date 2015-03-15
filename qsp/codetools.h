@@ -18,32 +18,30 @@
 #include "declarations.h"
 
 #ifndef QSP_CODETOOLSDEFINES
-	#define QSP_CODETOOLSDEFINES
+#define QSP_CODETOOLSDEFINES
 
-	#define QSP_EOLEXT QSP_FMT("_")
-	#define QSP_PREEOLEXT QSP_FMT(" ")
+#define QSP_EOLEXT QSP_FMT("_")
+#define QSP_PREEOLEXT QSP_FMT(" ")
 
-	typedef struct
-	{
-		int Stat;
-		int EndPos;
-		int ParamPos;
-	} QSPCachedStat;
+typedef struct {
+  int Stat;
+  int EndPos;
+  int ParamPos;
+} QSPCachedStat;
 
-	typedef struct
-	{
-		QSP_CHAR *Str;
-		int LineNum;
-		QSP_BOOL IsMultiline;
-		QSP_CHAR *Label;
-		QSPCachedStat *Stats;
-		int StatsCount;
-	} QSPLineOfCode;
+typedef struct {
+  QSP_CHAR *Str;
+  int LineNum;
+  QSP_BOOL IsMultiline;
+  QSP_CHAR *Label;
+  QSPCachedStat *Stats;
+  int StatsCount;
+} QSPLineOfCode;
 
-	/* External functions */
-	void qspFreePrepLines(QSPLineOfCode *, int);
-	void qspCopyPrepLines(QSPLineOfCode **, QSPLineOfCode *, int, int);
-	QSP_CHAR *qspJoinPrepLines(QSPLineOfCode *, int, QSP_CHAR *);
-	int qspPreprocessData(QSP_CHAR *, QSPLineOfCode **);
+/* External functions */
+void qspFreePrepLines(QSPLineOfCode *, int);
+void qspCopyPrepLines(QSPLineOfCode **, QSPLineOfCode *, int, int);
+QSP_CHAR *qspJoinPrepLines(QSPLineOfCode *, int, QSP_CHAR *);
+int qspPreprocessData(QSP_CHAR *, QSPLineOfCode **);
 
 #endif
