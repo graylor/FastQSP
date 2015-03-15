@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2014-02-18T21:18:59
-#
-#-------------------------------------------------
-
 QT += core gui webkit webkitwidgets network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia
@@ -30,14 +24,16 @@ HEADERS  += \
     qsp_htmlbuilder.h \
     local_requsts_proxy.h
 
-CONFIG(release, debug|release): DESTDIR = release
-else: CONFIG(debug, debug|release): DESTDIR = debug
+CONFIG(release, debug|release) {
+    BUILDDIR = ../build/release
+} 
 
-CONFIG(release, debug|release): OBJ_DIR = release
-else: CONFIG(debug, debug|release): OBJ_DIR = debug
+CONFIG(debug, debug|release) {
+    BUILDDIR = ../build/debug
+}
 
+DESTDIR = $$BUILDDIR/bin
+OBJECTS_DIR = $$BUILDDIR/obj/gui
+MOC_DIR = $$BUILDDIR/moc/gui
 
-CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qsp/release/ -lqsp
-else:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../qsp/debug/ -lqsp
-
-
+LIBS += -L$$DESTDIR -lqsp

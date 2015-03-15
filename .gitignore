@@ -9,10 +9,7 @@
 *.so
 *.dll
 *.dylib
-qsp/release/*
-qsp/debug/*
-gui/release/*
-gui/debug/*
+build
 
 # Visual studio file
 *.sln
@@ -20,6 +17,7 @@ gui/debug/*
 *.suo
 *.filters
 *.user
+vc*.pdb
 
 # Qt-es
 
@@ -27,5 +25,5 @@ gui/debug/*
 *.pro.user.*
 moc_*.cpp
 qrc_*.cpp
-Makefile
+Makefile*
 *-build-*
