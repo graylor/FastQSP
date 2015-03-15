@@ -18,6 +18,8 @@ build
 *.filters
 *.user
 vc*.pdb
+*.sdf
+*.opensdf
 
 # Qt-es
 
