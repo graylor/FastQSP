@@ -60,18 +60,18 @@ void qspCopyPrepLines(QSPLineOfCode **dest, QSPLineOfCode *src, int start, int e
 				}
 			}
 			else
-				line->Stats = 0;
-			line->IsMultiline = src[start].IsMultiline;
+                          line->Stats = nullptr;
+                        line->IsMultiline = src[start].IsMultiline;
 			if (src[start].Label)
 				line->Label = qspGetNewText(src[start].Label, -1);
 			else
-				line->Label = 0;
-			++line;
+                          line->Label = nullptr;
+                        ++line;
 			++start;
 		}
 	}
 	else
-		*dest = 0;
+          *dest = nullptr;
 }
 
 QSP_CHAR *qspJoinPrepLines(QSPLineOfCode *s, int count, QSP_CHAR *delim)
@@ -161,9 +161,9 @@ static int qspProcessPreformattedStrings(QSP_CHAR *data, QSPLineOfCode **strs)
 			line = ret + count - 1;
 			line->Str = qspDelSpc(str);
 			line->LineNum = lastLineNum;
-			line->Label = 0;
-			line->Stats = 0;
-			lastLineNum = lineNum;
+                        line->Label = nullptr;
+                        line->Stats = nullptr;
+                        lastLineNum = lineNum;
 			strLen = 0;
 			data += QSP_LEN(QSP_STRSDELIM);
 		}
@@ -174,9 +174,9 @@ static int qspProcessPreformattedStrings(QSP_CHAR *data, QSPLineOfCode **strs)
 	line = ret + count - 1;
 	line->Str = qspDelSpc(str);
 	line->LineNum = lastLineNum;
-	line->Label = 0;
-	line->Stats = 0;
-	free(str);
+        line->Label = nullptr;
+        line->Stats = nullptr;
+        free(str);
 	*strs = ret;
 	return count;
 }

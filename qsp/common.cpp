@@ -27,13 +27,13 @@
 static unsigned int qspRandX[55], qspRandY[256], qspRandZ;
 static int qspRandI, qspRandJ;
 QSP_BOOL qspIsDebug = QSP_FALSE;
-QSP_CHAR *qspCurDesc = 0;
+QSP_CHAR *qspCurDesc = nullptr;
 int qspCurDescLen = 0;
-QSP_CHAR *qspCurVars = 0;
+QSP_CHAR *qspCurVars = nullptr;
 int qspCurVarsLen = 0;
-QSP_CHAR *qspCurInput = 0;
+QSP_CHAR *qspCurInput = nullptr;
 int qspCurInputLen = 0;
-QSP_CHAR *qspViewPath = 0;
+QSP_CHAR *qspViewPath = nullptr;
 int qspTimerInterval = 0;
 QSP_BOOL qspIsMainDescChanged = QSP_FALSE;
 QSP_BOOL qspIsVarsDescChanged = QSP_FALSE;
@@ -75,15 +75,15 @@ void qspMemClear(QSP_BOOL isFirst)
 			qspClearVarsList(qspSavedVarsGroups[i].Vars, qspSavedVarsGroups[i].VarsCount);
 		if (qspSavedVarsGroups) free(qspSavedVarsGroups);
 	}
-	qspCurDesc = 0;
-	qspCurDescLen = 0;
-	qspCurVars = 0;
-	qspCurVarsLen = 0;
-	qspCurInput = 0;
-	qspCurInputLen = 0;
-	qspViewPath = 0;
-	qspSavedVarsGroups = 0;
-	qspSavedVarsGroupsCount = 0;
+        qspCurDesc = nullptr;
+        qspCurDescLen = 0;
+        qspCurVars = nullptr;
+        qspCurVarsLen = 0;
+        qspCurInput = nullptr;
+        qspCurInputLen = 0;
+        qspViewPath = nullptr;
+        qspSavedVarsGroups = nullptr;
+        qspSavedVarsGroupsCount = 0;
 }
 
 void qspSetSeed(unsigned int seed)

@@ -217,7 +217,7 @@ static char *qspUCS2StrStr(char *str, char *subStr)
 		if (!(*s2)) return (char *)cp;
 		++cp;
 	}
-	return 0;
+        return nullptr;
 }
 
 int qspStrCmpSB(char *s1, char *s2, unsigned char *table)
@@ -441,8 +441,8 @@ int qspReCodeGetIntVal(QSP_CHAR *val)
 {
 	int num;
 	QSP_CHAR *temp = qspCodeReCode(val, QSP_FALSE);
-	num = qspStrToNum(temp, 0);
-	free(temp);
+        num = qspStrToNum(temp, nullptr);
+        free(temp);
 	return num;
 }
 

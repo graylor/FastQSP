@@ -90,8 +90,8 @@ void qspAddAction(QSPVariant *args, int count, QSPLineOfCode *code, int start, i
 	if (count == 2 && qspIsAnyString(QSP_STR(args[1])))
 		imgPath = qspGetAbsFromRelPath(QSP_STR(args[1]));
 	else
-		imgPath = 0;
-	act = qspCurActions + qspCurActionsCount++;
+          imgPath = nullptr;
+        act = qspCurActions + qspCurActionsCount++;
 	act->Image = imgPath;
 	act->Desc = qspGetNewText(QSP_STR(args[0]), -1);
 	qspCopyPrepLines(&act->OnPressLines, code, start, end);

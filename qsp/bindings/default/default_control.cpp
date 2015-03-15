@@ -51,8 +51,10 @@ void QSPEnableDebugMode(QSP_BOOL isDebug)
 /* Получение данных текущего состояния */
 void QSPGetCurStateData(QSP_CHAR **loc, int *actIndex, int *line)
 {
-	*loc = (qspRealCurLoc >= 0 && qspRealCurLoc < qspLocsCount ? qspLocs[qspRealCurLoc].Name : 0);
-	*actIndex = qspRealActIndex;
+  *loc = (qspRealCurLoc >= 0 && qspRealCurLoc < qspLocsCount
+              ? qspLocs[qspRealCurLoc].Name
+              : nullptr);
+        *actIndex = qspRealActIndex;
 	*line = qspRealLine;
 }
 /* ------------------------------------------------------------ */
@@ -84,7 +86,7 @@ const QSP_CHAR *QSPGetQstFullPath()
 /* Название текущей локации */
 const QSP_CHAR *QSPGetCurLoc()
 {
-	return (qspCurLoc >= 0 ? qspLocs[qspCurLoc].Name : 0);
+  return (qspCurLoc >= 0 ? qspLocs[qspCurLoc].Name : nullptr);
 }
 /* ------------------------------------------------------------ */
 /* Основное описание локации */
@@ -156,7 +158,7 @@ void QSPGetActionData(int ind, QSP_CHAR **image, QSP_CHAR **desc)
 		*desc = qspCurActions[ind].Desc;
 	}
 	else
-		*image = *desc = 0;
+          *image = *desc = nullptr;
 }
 /* Выполнение кода выбранного действия */
 QSP_BOOL QSPExecuteSelActionCode(QSP_BOOL isRefresh)
@@ -181,8 +183,8 @@ QSP_BOOL QSPSetSelActionIndex(int ind, QSP_BOOL isRefresh)
 		qspPrepareExecution();
 		if (qspIsDisableCodeExec) return QSP_FALSE;
 		qspCurSelAction = ind;
-		qspExecLocByVarNameWithArgs(QSP_FMT("ONACTSEL"), 0, 0);
-		if (qspErrorNum) return QSP_FALSE;
+                qspExecLocByVarNameWithArgs(QSP_FMT("ONACTSEL"), nullptr, 0);
+                if (qspErrorNum) return QSP_FALSE;
 		if (isRefresh) qspCallRefreshInt(QSP_FALSE);
 	}
 	return QSP_TRUE;
@@ -214,7 +216,7 @@ void QSPGetObjectData(int ind, QSP_CHAR **image, QSP_CHAR **desc)
 		*desc = qspCurObjects[ind].Desc;
 	}
 	else
-		*image = *desc = 0;
+          *image = *desc = nullptr;
 }
 /* Установить индекс выбранного объекта */
 QSP_BOOL QSPSetSelObjectIndex(int ind, QSP_BOOL isRefresh)
@@ -225,8 +227,8 @@ QSP_BOOL QSPSetSelObjectIndex(int ind, QSP_BOOL isRefresh)
 		qspPrepareExecution();
 		if (qspIsDisableCodeExec) return QSP_FALSE;
 		qspCurSelObject = ind;
-		qspExecLocByVarNameWithArgs(QSP_FMT("ONOBJSEL"), 0, 0);
-		if (qspErrorNum) return QSP_FALSE;
+                qspExecLocByVarNameWithArgs(QSP_FMT("ONOBJSEL"), nullptr, 0);
+                if (qspErrorNum) return QSP_FALSE;
 		if (isRefresh) qspCallRefreshInt(QSP_FALSE);
 	}
 	return QSP_TRUE;
@@ -308,8 +310,8 @@ QSP_BOOL QSPExecString(const QSP_CHAR *s, QSP_BOOL isRefresh)
 	if (qspIsExitOnError && qspErrorNum) return QSP_FALSE;
 	qspPrepareExecution();
 	if (qspIsDisableCodeExec) return QSP_FALSE;
-	qspExecStringAsCodeWithArgs((QSP_CHAR *)s, 0, 0, 0);
-	if (qspErrorNum) return QSP_FALSE;
+        qspExecStringAsCodeWithArgs((QSP_CHAR *)s, nullptr, 0, nullptr);
+        if (qspErrorNum) return QSP_FALSE;
 	if (isRefresh) qspCallRefreshInt(QSP_FALSE);
 	return QSP_TRUE;
 }
@@ -330,8 +332,8 @@ QSP_BOOL QSPExecCounter(QSP_BOOL isRefresh)
 	if (!qspIsInCallBack)
 	{
 		qspPrepareExecution();
-		qspExecLocByVarNameWithArgs(QSP_FMT("COUNTER"), 0, 0);
-		if (qspErrorNum) return QSP_FALSE;
+                qspExecLocByVarNameWithArgs(QSP_FMT("COUNTER"), nullptr, 0);
+                if (qspErrorNum) return QSP_FALSE;
 		if (isRefresh) qspCallRefreshInt(QSP_FALSE);
 	}
 	return QSP_TRUE;
@@ -342,8 +344,8 @@ QSP_BOOL QSPExecUserInput(QSP_BOOL isRefresh)
 	if (qspIsExitOnError && qspErrorNum) return QSP_FALSE;
 	qspPrepareExecution();
 	if (qspIsDisableCodeExec) return QSP_FALSE;
-	qspExecLocByVarNameWithArgs(QSP_FMT("USERCOM"), 0, 0);
-	if (qspErrorNum) return QSP_FALSE;
+        qspExecLocByVarNameWithArgs(QSP_FMT("USERCOM"), nullptr, 0);
+        if (qspErrorNum) return QSP_FALSE;
 	if (isRefresh) qspCallRefreshInt(QSP_FALSE);
 	return QSP_TRUE;
 }
@@ -354,8 +356,10 @@ QSP_BOOL QSPExecUserInput(QSP_BOOL isRefresh)
 void QSPGetLastErrorData(int *errorNum, QSP_CHAR **errorLoc, int *errorActIndex, int *errorLine)
 {
 	*errorNum = qspErrorNum;
-	*errorLoc = (qspErrorLoc >= 0 && qspErrorLoc < qspLocsCount ? qspLocs[qspErrorLoc].Name : 0);
-	*errorActIndex = qspErrorActIndex;
+        *errorLoc = (qspErrorLoc >= 0 && qspErrorLoc < qspLocsCount
+                         ? qspLocs[qspErrorLoc].Name
+                         : nullptr);
+        *errorActIndex = qspErrorActIndex;
 	*errorLine = qspErrorLine;
 }
 /* Получить описание ошибки по ее номеру */
@@ -479,16 +483,16 @@ void QSPInit()
 {
 	qspIsDebug = QSP_FALSE;
 	qspRefreshCount = qspFullRefreshCount = 0;
-	qspQstPath = qspQstFullPath = 0;
-	qspQstPathLen = 0;
+        qspQstPath = qspQstFullPath = nullptr;
+        qspQstPathLen = 0;
 	qspQstCRC = 0;
 	qspRealCurLoc = -1;
 	qspRealActIndex = -1;
 	qspRealLine = 0;
 	qspMSCount = 0;
-	qspLocs = 0;
-	qspLocsNames = 0;
-	qspLocsCount = 0;
+        qspLocs = nullptr;
+        qspLocsNames = nullptr;
+        qspLocsCount = 0;
 	qspCurLoc = -1;
 	qspTimerInterval = 0;
 	qspCurIsShowObjs = qspCurIsShowActs = qspCurIsShowVars = qspCurIsShowInput = QSP_TRUE;

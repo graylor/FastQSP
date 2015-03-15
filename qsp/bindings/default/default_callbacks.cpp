@@ -34,7 +34,7 @@ void qspInitCallBacks()
 	qspIsDisableCodeExec = QSP_FALSE;
 	qspIsExitOnError = QSP_FALSE;
 	for (i = 0; i < QSP_CALL_DUMMY; ++i)
-		qspCallBacks[i] = 0;
+          qspCallBacks[i] = nullptr;
 }
 
 void qspSetCallBack(int type, QSP_CALLBACK func)

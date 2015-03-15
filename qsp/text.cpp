@@ -65,8 +65,8 @@ QSP_BOOL qspClearText(QSP_CHAR **text, int *textLen)
 	if (*text)
 	{
 		free(*text);
-		*text = 0;
-		if (*textLen)
+                *text = nullptr;
+                if (*textLen)
 		{
 			*textLen = 0;
 			return QSP_TRUE;
@@ -189,7 +189,7 @@ QSP_CHAR *qspStrChar(QSP_CHAR *str, QSP_CHAR ch)
 {
 	while (*str && *str != ch) ++str;
 	if (*str == ch) return str;
-	return 0;
+        return nullptr;
 }
 
 QSP_CHAR *qspStrNCopy(QSP_CHAR *strDest, QSP_CHAR *strSource, int maxLen)
@@ -218,7 +218,7 @@ QSP_CHAR *qspStrStr(QSP_CHAR *str, QSP_CHAR *strSearch)
 		if (!(*s2)) return str;
 		++str;
 	}
-	return 0;
+        return nullptr;
 }
 
 QSP_CHAR *qspStrPBrk(QSP_CHAR *str, QSP_CHAR *strCharSet)
@@ -230,13 +230,13 @@ QSP_CHAR *qspStrPBrk(QSP_CHAR *str, QSP_CHAR *strCharSet)
 			if (*set == *str) return str;
 		++str;
 	}
-	return 0;
+        return nullptr;
 }
 
 QSP_CHAR *qspInStrRChars(QSP_CHAR *str, QSP_CHAR *chars, QSP_CHAR *end)
 {
-	QSP_CHAR *pos = 0;
-	while (*str)
+  QSP_CHAR *pos = nullptr;
+        while (*str)
 	{
 		if (end && str == end) break;
 		if (qspIsInList(chars, *str)) pos = str;
@@ -311,7 +311,7 @@ void qspCopyStrs(QSP_CHAR ***dest, QSP_CHAR **src, int start, int end)
 			qspAddText(*dest + i++, src[start++], 0, -1, QSP_TRUE);
 	}
 	else
-		*dest = 0;
+          *dest = nullptr;
 }
 
 QSP_BOOL qspIsNumber(QSP_CHAR *s)
@@ -407,8 +407,9 @@ QSP_CHAR *qspStrPos(QSP_CHAR *txt, QSP_CHAR *str, QSP_BOOL isIsolated)
 	QSP_BOOL isLastDelim;
 	int strLen, c1, c2, c3;
 	QSP_CHAR quot, *pos = qspStrStr(txt, str);
-	if (!pos) return 0;
-	if (!(isIsolated || qspStrPBrk(txt, QSP_QUOTS QSP_LQUOT QSP_LRBRACK QSP_LSBRACK))) return pos;
+	if (!pos)
+          return nullptr;
+        if (!(isIsolated || qspStrPBrk(txt, QSP_QUOTS QSP_LQUOT QSP_LRBRACK QSP_LSBRACK))) return pos;
 	strLen = qspStrLen(str);
 	pos = qspStrEnd(txt) - strLen + 1;
 	c1 = c2 = c3 = 0;
@@ -420,8 +421,9 @@ QSP_CHAR *qspStrPos(QSP_CHAR *txt, QSP_CHAR *str, QSP_BOOL isIsolated)
 			quot = *txt;
 			while (++txt < pos)
 				if (*txt == quot && *(++txt) != quot) break;
-			if (txt >= pos) return 0;
-			isLastDelim = QSP_TRUE;
+			if (txt >= pos)
+                          return nullptr;
+                        isLastDelim = QSP_TRUE;
 		}
 		if (*txt == QSP_LRBRACK[0])
 			++c1;
@@ -458,7 +460,7 @@ QSP_CHAR *qspStrPos(QSP_CHAR *txt, QSP_CHAR *str, QSP_BOOL isIsolated)
 		}
 		++txt;
 	}
-	return 0;
+        return nullptr;
 }
 
 QSP_CHAR *qspStrPosPartial(QSP_CHAR *txt, QSP_CHAR *pos, QSP_CHAR *str, QSP_BOOL isIsolated)
@@ -538,16 +540,16 @@ QSP_CHAR *qspFormatText(QSP_CHAR *txt, QSP_BOOL canReturnSelf)
 		{
 			qspSetError(QSP_ERR_BRACKNOTFOUND);
 			free(newTxt);
-			return 0;
-		}
+                        return nullptr;
+                }
 		*rPos = 0;
 		val = qspExprValue(txt);
 		*rPos = QSP_RSUBEX[0];
 		if (qspRefreshCount != oldRefreshCount || qspErrorNum)
 		{
 			free(newTxt);
-			return 0;
-		}
+                        return nullptr;
+                }
 		qspConvertVariantTo(&val, QSP_TRUE);
 		if ((txtLen += qspStrLen(QSP_STR(val))) >= bufSize)
 		{

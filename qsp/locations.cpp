@@ -23,8 +23,8 @@
 #include "text.h"
 #include "variables.h"
 
-QSPLocation *qspLocs = 0;
-QSPLocName *qspLocsNames = 0;
+QSPLocation *qspLocs = nullptr;
+QSPLocName *qspLocsNames = nullptr;
 int qspLocsCount = 0;
 int qspCurLoc = -1;
 int qspRefreshCount = 0;
@@ -70,10 +70,10 @@ void qspCreateWorld(int start, int locsCount)
 	}
 	for (i = start; i < qspLocsCount; ++i)
 	{
-		qspLocsNames[i].Name = 0;
-		for (j = 0; j < QSP_MAXACTIONS; ++j)
-			qspLocs[i].Actions[j].Desc = 0;
-	}
+          qspLocsNames[i].Name = nullptr;
+                for (j = 0; j < QSP_MAXACTIONS; ++j)
+                  qspLocs[i].Actions[j].Desc = nullptr;
+        }
 }
 
 void qspPrepareLocs()
@@ -239,8 +239,8 @@ void qspExecLocByVarNameWithArgs(QSP_CHAR *name, QSPVariant *args, int count)
 		if (!(var = qspVarReference(name, QSP_FALSE))) break;
 		if (ind >= var->ValsCount) break;
 		if (!((locName = var->Values[ind].Str) && qspIsAnyString(locName))) break;
-		qspExecLocByNameWithArgs(locName, args, count, 0);
-		if (qspRefreshCount != oldRefreshCount || qspErrorNum) break;
+                qspExecLocByNameWithArgs(locName, args, count, nullptr);
+                if (qspRefreshCount != oldRefreshCount || qspErrorNum) break;
 		++ind;
 	}
 }

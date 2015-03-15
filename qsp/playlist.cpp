@@ -107,8 +107,9 @@ void qspPlayPLFiles()
 		if (pos)
 		{
 			*pos = 0;
-			qspPlayFile(qspPLFiles[i], qspStrToNum(pos + 1, 0), QSP_FALSE);
-			*pos = QSP_PLVOLUMEDELIM[0];
+                        qspPlayFile(qspPLFiles[i],
+                                    qspStrToNum(pos + 1, nullptr), QSP_FALSE);
+                        *pos = QSP_PLVOLUMEDELIM[0];
 		}
 		else
 			qspPlayFile(qspPLFiles[i], 100, QSP_FALSE);
@@ -181,7 +182,7 @@ QSP_BOOL qspStatementCloseFile(QSPVariant *args, int count, QSP_CHAR **jumpTo, i
 	else
 	{
 		qspClearPlayList(QSP_FALSE);
-		qspCallCloseFile(0);
-	}
+                qspCallCloseFile(nullptr);
+        }
 	return QSP_FALSE;
 }

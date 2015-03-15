@@ -29,8 +29,10 @@ QSP_BOOL qspStatementShowMenu(QSPVariant *args, int count, QSP_CHAR **jumpTo, in
 	QSPVariant arg;
 	int ind, itemsCount, maxItems, len;
 	QSP_CHAR *menuLocs[QSP_MAXMENUITEMS], *imgPath, *str, *pos, *pos2;
-	if (!(var = qspVarReferenceWithType(QSP_STR(args[0]), QSP_FALSE, 0))) return QSP_FALSE;
-	qspCallDeleteMenu();
+        if (!(var = qspVarReferenceWithType(QSP_STR(args[0]), QSP_FALSE,
+                                            nullptr)))
+          return QSP_FALSE;
+        qspCallDeleteMenu();
 	if (count == 1)
 	{
 		ind = 0;
@@ -53,9 +55,8 @@ QSP_BOOL qspStatementShowMenu(QSPVariant *args, int count, QSP_CHAR **jumpTo, in
 	{
 		if (itemsCount == maxItems) break;
 		if (!((str = var->Values[ind].Str) && qspIsAnyString(str))) break;
-		if (!(pos2 = qspInStrRChars(str, QSP_MENUDELIM, 0)))
-		{
-			qspSetError(QSP_ERR_COLONNOTFOUND);
+                if (!(pos2 = qspInStrRChars(str, QSP_MENUDELIM, nullptr))) {
+                        qspSetError(QSP_ERR_COLONNOTFOUND);
 			return QSP_FALSE;
 		}
 		if (itemsCount == QSP_MAXMENUITEMS)
@@ -66,14 +67,16 @@ QSP_BOOL qspStatementShowMenu(QSPVariant *args, int count, QSP_CHAR **jumpTo, in
 		if (pos = qspInStrRChars(str, QSP_MENUDELIM, pos2))
 		{
 			len = (int)(pos2 - pos) - 1;
-			imgPath = (qspIsAnyString(++pos2) ? qspGetAbsFromRelPath(pos2) : 0);
-		}
+                        imgPath =
+                            (qspIsAnyString(++pos2) ? qspGetAbsFromRelPath(pos2)
+                                                    : nullptr);
+                }
 		else
 		{
 			pos = pos2;
 			len = -1;
-			imgPath = 0;
-		}
+                        imgPath = nullptr;
+                }
 		menuLocs[itemsCount++] = qspGetNewText(pos + 1, len);
 		*pos = 0;
 		qspCallAddMenuItem(str, imgPath);
@@ -88,8 +91,9 @@ QSP_BOOL qspStatementShowMenu(QSPVariant *args, int count, QSP_CHAR **jumpTo, in
 		{
 			arg.IsStr = QSP_FALSE;
 			QSP_NUM(arg) = ind + 1;
-			qspExecLocByNameWithArgs(menuLocs[ind], &arg, 1, 0);
-		}
+                        qspExecLocByNameWithArgs(menuLocs[ind], &arg, 1,
+                                                 nullptr);
+                }
 		while (--itemsCount >= 0)
 			free(menuLocs[itemsCount]);
 	}

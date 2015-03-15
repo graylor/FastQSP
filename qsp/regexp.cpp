@@ -33,9 +33,9 @@ void qspClearRegExps(QSP_BOOL isFirst)
 			free(exp->Text);
 			onig_free(exp->CompiledExp);
 		}
-		exp->Text = 0;
-		exp->CompiledExp = 0;
-		++exp;
+                exp->Text = nullptr;
+                exp->CompiledExp = nullptr;
+                ++exp;
 	}
 	qspCompiledRegExpsCurInd = 0;
 }
@@ -59,8 +59,8 @@ regex_t *qspRegExpGetCompiled(QSP_CHAR *exp)
 	if (onig_new(&onigExp, tempBeg, tempEnd, ONIG_OPTION_DEFAULT, QSP_ONIG_ENC, ONIG_SYNTAX_PERL_NG, &onigInfo))
 	{
 		qspSetError(QSP_ERR_INCORRECTREGEXP);
-		return 0;
-	}
+                return nullptr;
+        }
 	compExp = qspCompiledRegExps + qspCompiledRegExpsCurInd;
 	if (compExp->Text)
 	{
@@ -79,7 +79,8 @@ QSP_BOOL qspRegExpStrMatch(regex_t *exp, QSP_CHAR *str)
 	OnigUChar *tempBeg, *tempEnd;
 	tempBeg = (OnigUChar *)str;
 	tempEnd = (OnigUChar *)qspStrEnd(str);
-	return (onig_match(exp, tempBeg, tempEnd, tempBeg, 0, ONIG_OPTION_NONE) == tempEnd - tempBeg);
+        return (onig_match(exp, tempBeg, tempEnd, tempBeg, nullptr,
+                           ONIG_OPTION_NONE) == tempEnd - tempBeg);
 }
 
 QSP_CHAR *qspRegExpStrFind(regex_t *exp, QSP_CHAR *str, int ind)
