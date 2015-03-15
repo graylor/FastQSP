@@ -9,7 +9,8 @@ public:
   int WriteIntVal(int val, QSP_BOOL isCode);
   int WriteVal(QSP_CHAR *val, QSP_BOOL isCode);
 
-  QSP_CHAR* GetResult();
+  std::size_t BufferLength();
+  QSP_CHAR* CloneBuffer();
 private:
   int AddText(QSP_CHAR* val, int valLen);
   int AddText(QSP_CHAR* val);

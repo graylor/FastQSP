@@ -18,7 +18,7 @@ int QspCodeBuilder::WriteIntVal(int val, QSP_BOOL isCode) {
   qspNumToStr(buf, val);
   if (isCode) {
     temp = qspCodeReCode(buf, QSP_TRUE);
-    AddText(temp, -1);
+    AddText(temp);
     free(temp);
   } else {
     AddText(buf);
@@ -40,9 +40,14 @@ int QspCodeBuilder::WriteVal(QSP_CHAR *val, QSP_BOOL isCode) {
   return AddText(QSP_STRSDELIM, QSP_LEN(QSP_STRSDELIM));
 }
 
-QSP_CHAR* QspCodeBuilder::GetResult() {
-  std::size_t len = buffer.length();
-  QSP_CHAR* result = reinterpret_cast<QSP_CHAR*>(malloc(len));
+size_t QspCodeBuilder::BufferLength()
+{
+  return buffer.length() + 1;
+}
+
+QSP_CHAR* QspCodeBuilder::CloneBuffer() {
+  std::size_t len = buffer.length() + 1;
+  QSP_CHAR* result = reinterpret_cast<QSP_CHAR*>(malloc(len*sizeof(QSP_CHAR)));
   qspStrNCopy(result, buffer.c_str(), len);
   return result;
 }

@@ -29,6 +29,7 @@
 #include "text.h"
 #include "time.h"
 #include "variables.h"
+#include "qspcode_builder.h"
 
 QSP_CHAR *qspQstPath = nullptr;
 int qspQstPathLen = 0;
@@ -348,86 +349,87 @@ int qspSaveGameStatusToString(QSP_CHAR **buf) {
   varsCount = qspPrepareLocalVars(&savedVars);
   if (qspErrorNum)
     return 0;
-  *buf = nullptr;
+  QspCodeBuilder builder;
+  // *buf = nullptr;
   qspRefreshPlayList();
   locName = (qspCurLoc >= 0 ? qspLocs[qspCurLoc].Name : nullptr);
-  len = qspCodeWriteVal(buf, 0, QSP_SAVEDGAMEID, QSP_FALSE);
-  len = qspCodeWriteVal(buf, len, QSP_VER, QSP_FALSE);
-  len = qspCodeWriteIntVal(buf, len, qspQstCRC, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, qspGetTime(), QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, qspCurSelAction, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, qspCurSelObject, QSP_TRUE);
-  len = qspCodeWriteVal(buf, len, qspViewPath, QSP_TRUE);
-  len = qspCodeWriteVal(buf, len, qspCurInput, QSP_TRUE);
-  len = qspCodeWriteVal(buf, len, qspCurDesc, QSP_TRUE);
-  len = qspCodeWriteVal(buf, len, qspCurVars, QSP_TRUE);
-  len = qspCodeWriteVal(buf, len, locName, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, (int)qspCurIsShowActs, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, (int)qspCurIsShowObjs, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, (int)qspCurIsShowVars, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, (int)qspCurIsShowInput, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, qspTimerInterval, QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, qspPLFilesCount, QSP_TRUE);
+  builder.WriteVal(QSP_SAVEDGAMEID, QSP_FALSE);
+  builder.WriteVal(QSP_VER, QSP_FALSE);
+  builder.WriteIntVal(qspQstCRC, QSP_TRUE);
+  builder.WriteIntVal(qspGetTime(), QSP_TRUE);
+  builder.WriteIntVal(qspCurSelAction, QSP_TRUE);
+  builder.WriteIntVal(qspCurSelObject, QSP_TRUE);
+  builder.WriteVal(qspViewPath, QSP_TRUE);
+  builder.WriteVal(qspCurInput, QSP_TRUE);
+  builder.WriteVal(qspCurDesc, QSP_TRUE);
+  builder.WriteVal(qspCurVars, QSP_TRUE);
+  builder.WriteVal(locName, QSP_TRUE);
+  builder.WriteIntVal((int)qspCurIsShowActs, QSP_TRUE);
+  builder.WriteIntVal((int)qspCurIsShowObjs, QSP_TRUE);
+  builder.WriteIntVal((int)qspCurIsShowVars, QSP_TRUE);
+  builder.WriteIntVal((int)qspCurIsShowInput, QSP_TRUE);
+  builder.WriteIntVal(qspTimerInterval, QSP_TRUE);
+  builder.WriteIntVal(qspPLFilesCount, QSP_TRUE);
   for (i = 0; i < qspPLFilesCount; ++i)
-    len = qspCodeWriteVal(buf, len, qspPLFiles[i], QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, qspCurIncFilesCount, QSP_TRUE);
+    builder.WriteVal(qspPLFiles[i], QSP_TRUE);
+  builder.WriteIntVal(qspCurIncFilesCount, QSP_TRUE);
   for (i = 0; i < qspCurIncFilesCount; ++i)
-    len = qspCodeWriteVal(buf, len, qspCurIncFiles[i], QSP_TRUE);
-  len = qspCodeWriteIntVal(buf, len, qspCurActionsCount, QSP_TRUE);
+    builder.WriteVal(qspCurIncFiles[i], QSP_TRUE);
+  builder.WriteIntVal(qspCurActionsCount, QSP_TRUE);
   for (i = 0; i < qspCurActionsCount; ++i) {
     if (qspCurActions[i].Image)
-      len = qspCodeWriteVal(buf, len, qspCurActions[i].Image + qspQstPathLen,
+      builder.WriteVal(qspCurActions[i].Image + qspQstPathLen,
                             QSP_TRUE);
     else
-      len = qspCodeWriteVal(buf, len, nullptr, QSP_FALSE);
-    len = qspCodeWriteVal(buf, len, qspCurActions[i].Desc, QSP_TRUE);
-    len = qspCodeWriteIntVal(buf, len, qspCurActions[i].OnPressLinesCount,
+      builder.WriteVal(nullptr, QSP_FALSE);
+    builder.WriteVal(qspCurActions[i].Desc, QSP_TRUE);
+    builder.WriteIntVal(qspCurActions[i].OnPressLinesCount,
                              QSP_TRUE);
     for (j = 0; j < qspCurActions[i].OnPressLinesCount; ++j) {
-      len = qspCodeWriteVal(buf, len, qspCurActions[i].OnPressLines[j].Str,
+      builder.WriteVal(qspCurActions[i].OnPressLines[j].Str,
                             QSP_TRUE);
-      len = qspCodeWriteIntVal(
-          buf, len, qspCurActions[i].OnPressLines[j].LineNum, QSP_TRUE);
+      builder.WriteIntVal(
+          qspCurActions[i].OnPressLines[j].LineNum, QSP_TRUE);
     }
-    len = qspCodeWriteIntVal(buf, len, qspCurActions[i].Location, QSP_TRUE);
-    len = qspCodeWriteIntVal(buf, len, qspCurActions[i].ActIndex, QSP_TRUE);
-    len = qspCodeWriteIntVal(buf, len, qspCurActions[i].StartLine, QSP_TRUE);
-    len = qspCodeWriteIntVal(buf, len, (int)qspCurActions[i].IsManageLines,
+    builder.WriteIntVal(qspCurActions[i].Location, QSP_TRUE);
+    builder.WriteIntVal(qspCurActions[i].ActIndex, QSP_TRUE);
+    builder.WriteIntVal(qspCurActions[i].StartLine, QSP_TRUE);
+    builder.WriteIntVal((int)qspCurActions[i].IsManageLines,
                              QSP_TRUE);
   }
-  len = qspCodeWriteIntVal(buf, len, qspCurObjectsCount, QSP_TRUE);
+  builder.WriteIntVal(qspCurObjectsCount, QSP_TRUE);
   for (i = 0; i < qspCurObjectsCount; ++i) {
     if (qspCurObjects[i].Image)
-      len = qspCodeWriteVal(buf, len, qspCurObjects[i].Image + qspQstPathLen,
+      builder.WriteVal(qspCurObjects[i].Image + qspQstPathLen,
                             QSP_TRUE);
     else
-      len = qspCodeWriteVal(buf, len, nullptr, QSP_FALSE);
-    len = qspCodeWriteVal(buf, len, qspCurObjects[i].Desc, QSP_TRUE);
+      builder.WriteVal(nullptr, QSP_FALSE);
+    builder.WriteVal(qspCurObjects[i].Desc, QSP_TRUE);
   }
-  len = qspCodeWriteIntVal(buf, len, qspGetVarsCount(), QSP_TRUE);
+  builder.WriteIntVal(qspGetVarsCount(), QSP_TRUE);
   for (i = 0; i < QSP_VARSCOUNT; ++i)
     if (qspVars[i].Name) {
-      len = qspCodeWriteIntVal(buf, len, i, QSP_TRUE);
-      len = qspCodeWriteVal(buf, len, qspVars[i].Name, QSP_TRUE);
-      len = qspCodeWriteIntVal(buf, len, qspVars[i].ValsCount, QSP_TRUE);
+      builder.WriteIntVal(i, QSP_TRUE);
+      builder.WriteVal(qspVars[i].Name, QSP_TRUE);
+      builder.WriteIntVal(qspVars[i].ValsCount, QSP_TRUE);
       for (j = 0; j < qspVars[i].ValsCount; ++j) {
-        len = qspCodeWriteIntVal(buf, len, qspVars[i].Values[j].Num, QSP_TRUE);
-        len = qspCodeWriteVal(buf, len, qspVars[i].Values[j].Str, QSP_TRUE);
+        builder.WriteIntVal(qspVars[i].Values[j].Num, QSP_TRUE);
+        builder.WriteVal(qspVars[i].Values[j].Str, QSP_TRUE);
       }
-      len = qspCodeWriteIntVal(buf, len, qspVars[i].IndsCount, QSP_TRUE);
+      builder.WriteIntVal(qspVars[i].IndsCount, QSP_TRUE);
       for (j = 0; j < qspVars[i].IndsCount; ++j) {
-        len =
-            qspCodeWriteIntVal(buf, len, qspVars[i].Indices[j].Index, QSP_TRUE);
-        len = qspCodeWriteVal(buf, len, qspVars[i].Indices[j].Str, QSP_TRUE);
+        builder.WriteIntVal(qspVars[i].Indices[j].Index, QSP_TRUE);
+        builder.WriteVal(qspVars[i].Indices[j].Str, QSP_TRUE);
       }
     }
+  *buf = builder.CloneBuffer();
   qspRestoreLocalVars(savedVars, varsCount, qspSavedVarsGroups,
                       qspSavedVarsGroupsCount);
   if (qspErrorNum) {
-    free(*buf);
+    //free(*buf);
     return 0;
   }
-  return len;
+  return builder.BufferLength();
 }
 
 void qspSaveGameStatus(QSP_CHAR *fileName) {
