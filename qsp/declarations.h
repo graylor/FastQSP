@@ -24,6 +24,7 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
+#include <string>
 
 #include "bindings/bindings_config.h"
 #include "qsp.h"
@@ -32,6 +33,8 @@
 #define QSP_DEFINES
 
 static int qspEndiannessTestValue = 1;
+
+using qsp_string = std::basic_string<QSP_CHAR>;
 
 #ifdef _UNICODE
 #ifdef _WIN32

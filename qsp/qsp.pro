@@ -50,7 +50,8 @@ HEADERS += actions.h \
            bindings/default/qsp_default.h \
            bindings/flash/flash.h \
            bindings/java/java.h \
-           time_qsp.h
+           time_qsp.h \
+    qspcode_builder.h
 SOURCES += \
     actions.cpp \
     callbacks.cpp \
@@ -83,4 +84,5 @@ SOURCES += \
     bindings/flash/flash_control.cpp \
     bindings/java/java_callbacks.cpp \
     bindings/java/java_coding.cpp \
-    bindings/java/java_control.cpp
+    bindings/java/java_control.cpp \
+    qspcode_builder.cpp

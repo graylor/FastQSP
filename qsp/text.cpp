@@ -185,7 +185,7 @@ QSP_CHAR *qspStrChar(QSP_CHAR *str, QSP_CHAR ch) {
   return nullptr;
 }
 
-QSP_CHAR *qspStrNCopy(QSP_CHAR *strDest, const QSP_CHAR *strSource, int maxLen) {
+QSP_CHAR *qspStrNCopy(QSP_CHAR *strDest, const QSP_CHAR* strSource, int maxLen) {
   QSP_CHAR *ret = strDest;
   while (maxLen-- && (*strDest++ = *strSource++))
     ;
