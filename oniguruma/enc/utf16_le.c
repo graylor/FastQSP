@@ -27,6 +27,7 @@
  * SUCH DAMAGE.
  */
 
+#include "oniguruma.h"
 #include "../regenc.h"
 
 static const int EncLen_UTF16[] = {

@@ -16,6 +16,10 @@
 */
 
 #include "declarations.h"
+#ifdef EXPORT
+    #undef EXPORT
+#endif
+#include "oniguruma.h"
 
 #ifndef QSP_REGEXPDEFINES
 	#define QSP_REGEXPDEFINES

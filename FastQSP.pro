@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS = qsp \
-          gui
+          gui \
+          oniguruma
 

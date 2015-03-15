@@ -6,7 +6,7 @@ else: QT += phonon
 TARGET = FastQSP
 TEMPLATE = app
 
-DEFINES += NOT_RUBY EXPORT _UNICODE
+DEFINES += NOT_RUBY _UNICODE
 
 win32: DEFINES+= _WIN
 
@@ -36,4 +36,4 @@ DESTDIR = $$BUILDDIR/bin
 OBJECTS_DIR = $$BUILDDIR/obj/gui
 MOC_DIR = $$BUILDDIR/moc/gui
 
-LIBS += -L$$DESTDIR -lqsp
+LIBS += -L$$DESTDIR -lqsp -loniguruma

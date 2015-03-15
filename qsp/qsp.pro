@@ -3,6 +3,7 @@ TARGET = qsp
 win32 {
     CONFIG += dll
     DEFINES+= _WIN
+#    QMAKE_CFLAGS += /TP
 } 
 
 DEFINES += NOT_RUBY EXPORT _UNICODE
@@ -19,8 +20,10 @@ DESTDIR = $$BUILDDIR/bin
 OBJECTS_DIR = $$BUILDDIR/obj/qsp
 MOC_DIR = $$BUILDDIR/moc/qsp
 
+LIBS += -L$$DESTDIR -loniguruma
+
 # Input
-INCLUDEPATH += .
+INCLUDEPATH += . ../oniguruma
 HEADERS += actions.h \
            callbacks.h \
            codetools.h \
@@ -42,12 +45,6 @@ HEADERS += actions.h \
            variables.h \
            variant.h \
            bindings/bindings_config.h \
-           onig/config.h \
-           onig/oniguruma.h \
-           onig/regenc.h \
-           onig/regint.h \
-           onig/regparse.h \
-           onig/st.h \
            bindings/android/android.h \
            bindings/default/qsp_default.h \
            bindings/flash/flash.h \
@@ -73,15 +70,6 @@ SOURCES += actions.c \
            towupper.c \
            variables.c \
            variant.c \
-           onig/regcomp.c \
-           onig/regenc.c \
-           onig/regerror.c \
-           onig/regexec.c \
-           onig/regparse.c \
-           onig/regsyntax.c \
-           onig/regtrav.c \
-           onig/regversion.c \
-           onig/st.c \
            bindings/android/android_callbacks.c \
            bindings/android/android_coding.c \
            bindings/android/android_control.c \
@@ -94,12 +82,4 @@ SOURCES += actions.c \
            bindings/java/java_callbacks.c \
            bindings/java/java_coding.c \
            bindings/java/java_control.c \
-           onig/enc/ascii.c \
-           onig/enc/cp1251.c \
-           onig/enc/koi8_r.c \
-           onig/enc/unicode.c \
-           onig/enc/utf16_be.c \
-           onig/enc/utf16_le.c \
-           onig/enc/utf32_be.c \
-           onig/enc/utf32_le.c \
            time_qsp.c
