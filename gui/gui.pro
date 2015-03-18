@@ -3,11 +3,14 @@ QT += core gui webkit webkitwidgets network
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia
 else: QT += phonon
 
+QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
 CONFIG += c++11
 
 TARGET = FastQSP
 TEMPLATE = app
 
+GIT_VERSION = $$system(git --git-dir $$PWD/../.git describe)
+DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
 DEFINES += NOT_RUBY _UNICODE
 
 win32: DEFINES+= _WIN

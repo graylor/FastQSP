@@ -154,7 +154,7 @@ void FastQSPWindow::about() {
       "<td>Graylor[graylor@yandex.ru]</td></tr><tr><td>Page:</td> <td><a "
       "href='https://github.com/graylor/FastQSP'>https://github.com/graylor/"
       "FastQSP</a></td></tr><tr><td>License:</td> <td>GPL v3</td></tr>");
-  about->setFixedSize(250, 90);
+  about->setFixedSize(300, 90);
   about->show();
 }
 

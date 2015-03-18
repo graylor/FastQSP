@@ -7,6 +7,8 @@ win32 {
 
 DEFINES += NOT_RUBY EXPORT _UNICODE
 
+QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
+
 CONFIG(release, debug|release) {
     BUILDDIR = ../build/release
 } 
