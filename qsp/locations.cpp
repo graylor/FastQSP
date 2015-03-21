@@ -219,7 +219,7 @@ void qspExecLocByNameWithArgs(QSP_CHAR *name, QSPVariant *args, int count,
   qspMoveVar(varRes, &result);
 }
 
-void qspExecLocByVarNameWithArgs(QSP_CHAR *name, QSPVariant *args, int count) {
+void qspExecLocByVarNameWithArgs(const QSP_CHAR *name, QSPVariant *args, int count) {
   QSPVar *var;
   QSP_CHAR *locName;
   int ind = 0, oldRefreshCount = qspRefreshCount;

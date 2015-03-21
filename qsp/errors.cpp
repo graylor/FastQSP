@@ -41,8 +41,8 @@ void qspResetError() {
   qspErrorLine = 0;
 }
 
-QSP_CHAR *qspGetErrorDesc(int errorNum) {
-  QSP_CHAR *str;
+const QSP_CHAR *qspGetErrorDesc(int errorNum) {
+  const QSP_CHAR *str;
   switch (errorNum) {
   case QSP_ERR_DIVBYZERO:
     str = QSP_FMT("Division by zero!");

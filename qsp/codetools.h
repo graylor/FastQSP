@@ -41,7 +41,7 @@ typedef struct {
 /* External functions */
 void qspFreePrepLines(QSPLineOfCode *, int);
 void qspCopyPrepLines(QSPLineOfCode **, QSPLineOfCode *, int, int);
-QSP_CHAR *qspJoinPrepLines(QSPLineOfCode *, int, QSP_CHAR *);
+QSP_CHAR *qspJoinPrepLines(QSPLineOfCode *, int, const QSP_CHAR*);
 int qspPreprocessData(QSP_CHAR *, QSPLineOfCode **);
 
 #endif

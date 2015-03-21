@@ -33,7 +33,7 @@ typedef QSP_BOOL (*QSP_STATEMENT)(QSPVariant *, int, QSP_CHAR **, int);
 
 typedef struct {
   int Code;
-  QSP_CHAR *Name;
+  const QSP_CHAR *Name;
   int NameLen;
 } QSPStatName;
 

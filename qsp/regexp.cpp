@@ -69,7 +69,7 @@ regex_t *qspRegExpGetCompiled(QSP_CHAR *exp) {
   return onigExp;
 }
 
-QSP_BOOL qspRegExpStrMatch(regex_t *exp, QSP_CHAR *str) {
+QSP_BOOL qspRegExpStrMatch(regex_t *exp, const QSP_CHAR *str) {
   OnigUChar *tempBeg, *tempEnd;
   tempBeg = (OnigUChar *)str;
   tempEnd = (OnigUChar *)qspStrEnd(str);

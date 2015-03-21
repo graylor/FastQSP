@@ -35,7 +35,7 @@ int qspStatsNamesCounts[QSP_STATSLEVELS];
 int qspStatMaxLen = 0;
 
 static void qspAddStatement(int, int, QSP_STATEMENT, int, int, ...);
-static void qspAddStatName(int, QSP_CHAR *, int);
+static void qspAddStatName(int, const QSP_CHAR*, int);
 static int qspStatsCompare(const void *, const void *);
 static int qspStatStringCompare(const void *, const void *);
 static int qspGetStatCode(QSP_CHAR *, QSP_CHAR **);
@@ -92,7 +92,7 @@ static void qspAddStatement(int statCode, int extArg, QSP_STATEMENT func,
   }
 }
 
-static void qspAddStatName(int statCode, QSP_CHAR *statName, int level) {
+static void qspAddStatName(int statCode, const QSP_CHAR *statName, int level) {
   int count, len = qspStrLen(statName);
   count = qspStatsNamesCounts[level];
   qspStatsNames[level][count].Name = statName;

@@ -31,6 +31,6 @@ extern int qspRealActIndex;
 /* External functions */
 void qspSetError(int);
 void qspResetError();
-QSP_CHAR *qspGetErrorDesc(int);
+const QSP_CHAR* qspGetErrorDesc(int);
 
 #endif

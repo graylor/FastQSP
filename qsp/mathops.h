@@ -35,7 +35,7 @@ typedef void (*QSP_FUNCTION)(QSPVariant *, int, QSPVariant *);
 
 typedef struct {
   int Code;
-  QSP_CHAR *Name;
+  const QSP_CHAR *Name;
   int NameLen;
 } QSPMathOpName;
 

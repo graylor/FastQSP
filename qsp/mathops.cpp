@@ -34,12 +34,12 @@ int qspOpsNamesCounts[QSP_OPSLEVELS];
 int qspOpMaxLen = 0;
 
 static void qspAddOperation(int, int, QSP_FUNCTION, int, int, int, ...);
-static void qspAddOpName(int, QSP_CHAR *, int);
+static void qspAddOpName(int, const QSP_CHAR*, int);
 static int qspMathOpsCompare(const void *, const void *);
 static int qspMathOpStringFullCompare(const void *, const void *);
 static int qspMathOpStringCompare(const void *, const void *);
 static int qspGetNumber(QSP_CHAR **);
-static QSP_CHAR *qspGetName(QSP_CHAR **);
+static QSP_CHAR *qspGetName(QSP_CHAR**);
 static int qspFunctionOpCode(QSP_CHAR *);
 static int qspOperatorOpCode(QSP_CHAR **);
 static QSP_CHAR *qspGetString(QSP_CHAR **);
@@ -84,7 +84,7 @@ static void qspAddOperation(int opCode, int priority, QSP_FUNCTION func,
   }
 }
 
-static void qspAddOpName(int opCode, QSP_CHAR *opName, int level) {
+static void qspAddOpName(int opCode, const QSP_CHAR *opName, int level) {
   int count, len = qspStrLen(opName);
   count = qspOpsNamesCounts[level];
   qspOpsNames[level][count].Name = opName;

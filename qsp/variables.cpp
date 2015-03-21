@@ -149,7 +149,7 @@ static void qspInitVarData(QSPVar *var) {
   var->IndsBufSize = 0;
 }
 
-QSPVar *qspVarReference(QSP_CHAR *name, QSP_BOOL isCreate) {
+QSPVar *qspVarReference(const QSP_CHAR *name, QSP_BOOL isCreate) {
   int i;
   QSPVar *var;
   QSP_CHAR *uName;
@@ -369,7 +369,7 @@ QSPVariant qspGetVarValueByReference(QSPVar *var, int ind,
   return qspGetEmptyVariant(isStringType);
 }
 
-QSP_CHAR *qspGetVarStrValue(QSP_CHAR *name) {
+const QSP_CHAR *qspGetVarStrValue(QSP_CHAR *name) {
   QSP_CHAR *text;
   QSPVar *var;
   if (var = qspVarReference(name, QSP_FALSE)) {
@@ -383,7 +383,7 @@ QSP_CHAR *qspGetVarStrValue(QSP_CHAR *name) {
   return QSP_FMT("");
 }
 
-int qspGetVarNumValue(QSP_CHAR *name) {
+int qspGetVarNumValue(const QSP_CHAR *name) {
   QSPVar *var;
   if (var = qspVarReference(name, QSP_FALSE)) {
     if (var->ValsCount)
@@ -560,7 +560,7 @@ int qspArrayPos(QSP_CHAR *varName, QSPVariant *val, int ind,
                 QSP_BOOL isRegExp) {
   int num, count;
   QSPVar *var;
-  QSP_CHAR *str;
+  const QSP_CHAR *str;
   regex_t *regExp;
   QSP_BOOL isString;
   if (!(var = qspVarReferenceWithType(varName, QSP_FALSE, &isString)))

@@ -34,7 +34,7 @@ typedef struct {
 /* External functions */
 void qspClearRegExps(QSP_BOOL);
 regex_t *qspRegExpGetCompiled(QSP_CHAR *);
-QSP_BOOL qspRegExpStrMatch(regex_t *, QSP_CHAR *);
+QSP_BOOL qspRegExpStrMatch(regex_t *, const QSP_CHAR*);
 QSP_CHAR *qspRegExpStrFind(regex_t *, QSP_CHAR *, int);
 int qspRegExpStrPos(regex_t *, QSP_CHAR *, int);
 

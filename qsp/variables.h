@@ -57,12 +57,12 @@ extern int qspSavedVarsGroupsCount;
 /* External functions */
 void qspClearVars(QSP_BOOL);
 void qspEmptyVar(QSPVar *);
-QSPVar *qspVarReference(QSP_CHAR *, QSP_BOOL);
+QSPVar *qspVarReference(const QSP_CHAR*, QSP_BOOL);
 QSPVar *qspVarReferenceWithType(QSP_CHAR *, QSP_BOOL, QSP_BOOL *);
 void qspSetVarValueByReference(QSPVar *, int, QSPVariant *);
 QSPVariant qspGetVarValueByReference(QSPVar *, int, QSP_BOOL);
-QSP_CHAR *qspGetVarStrValue(QSP_CHAR *);
-int qspGetVarNumValue(QSP_CHAR *);
+const QSP_CHAR* qspGetVarStrValue(QSP_CHAR *);
+int qspGetVarNumValue(const QSP_CHAR*);
 QSPVariant qspGetVar(QSP_CHAR *);
 void qspPrepareGlobalVars();
 int qspPrepareLocalVars(QSPVar **);

@@ -67,7 +67,7 @@ void qspCopyPrepLines(QSPLineOfCode **dest, QSPLineOfCode *src, int start,
     *dest = nullptr;
 }
 
-QSP_CHAR *qspJoinPrepLines(QSPLineOfCode *s, int count, QSP_CHAR *delim) {
+QSP_CHAR *qspJoinPrepLines(QSPLineOfCode *s, int count, const QSP_CHAR *delim) {
   int i, txtLen = 0, txtRealLen = 0, bufSize = 256, lastIndex = count - 1,
          delimLen = qspStrLen(delim);
   QSP_CHAR *txt = (QSP_CHAR *)malloc(bufSize * sizeof(QSP_CHAR));
