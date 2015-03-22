@@ -1,7 +1,6 @@
 #include "fastqspwindow.h"
 #include <crash-report.h>
 #include <QApplication>
-#include <QStandardPaths>
 
 FastQSPWindow *qspWin;
 
@@ -13,7 +12,7 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setApplicationVersion(STR(GIT_VERSION));
 
   QApplication a(argc, argv);
-  Breakpad::CrashHandler::instance()->Init(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+  Breakpad::CrashHandler::instance()->Init(a.applicationDirPath());
 
   qspWin = new FastQSPWindow();
   qspWin->resize(975, 630);

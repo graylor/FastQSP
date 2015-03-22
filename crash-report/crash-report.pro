@@ -72,8 +72,6 @@ HEADERS += $$PWD/google-breakpad-src/common/string_conversion.h
 HEADERS += $$PWD/google-breakpad-src/common/symbol_data.h
 HEADERS += $$PWD/google-breakpad-src/common/unordered.h
 HEADERS += $$PWD/google-breakpad-src/common/using_std_string.h
-HEADERS += $$PWD/google-breakpad-src/client/minidump_file_writer.h
-HEADERS += $$PWD/google-breakpad-src/client/minidump_file_writer-inl.h
 
 SOURCES += $$PWD/google-breakpad-src/common/convert_UTF.c
 SOURCES += $$PWD/google-breakpad-src/common/language.cc
@@ -81,7 +79,6 @@ SOURCES += $$PWD/google-breakpad-src/common/md5.cc
 SOURCES += $$PWD/google-breakpad-src/common/module.cc
 SOURCES += $$PWD/google-breakpad-src/common/simple_string_dictionary.cc
 SOURCES += $$PWD/google-breakpad-src/common/string_conversion.cc
-SOURCES += $$PWD/google-breakpad-src/client/minidump_file_writer.cc
 
 # Windows
 win32 {
@@ -112,6 +109,8 @@ unix {
     HEADERS += $$PWD/google-breakpad-src/client/linux/minidump_writer/linux_dumper.h
     HEADERS += $$PWD/google-breakpad-src/client/linux/minidump_writer/linux_ptrace_dumper.h
     HEADERS += $$PWD/google-breakpad-src/client/linux/minidump_writer/directory_reader.h
+    HEADERS += $$PWD/google-breakpad-src/client/minidump_file_writer.h
+    HEADERS += $$PWD/google-breakpad-src/client/minidump_file_writer-inl.h
     HEADERS += $$PWD/google-breakpad-src/client/linux/microdump_writer/microdump_writer.h
     HEADERS += $$PWD/google-breakpad-src/client/linux/log/log.h
     HEADERS += $$PWD/google-breakpad-src/common/linux/linux_libc_support.h
@@ -136,6 +135,7 @@ unix {
     SOURCES += $$PWD/google-breakpad-src/client/linux/minidump_writer/linux_dumper.cc
     SOURCES += $$PWD/google-breakpad-src/client/linux/minidump_writer/linux_ptrace_dumper.cc
     SOURCES += $$PWD/google-breakpad-src/client/linux/microdump_writer/microdump_writer.cc
+    SOURCES += $$PWD/google-breakpad-src/client/minidump_file_writer.cc
     SOURCES += $$PWD/google-breakpad-src/client/linux/log/log.cc
     SOURCES += $$PWD/google-breakpad-src/common/linux/linux_libc_support.cc
     SOURCES += $$PWD/google-breakpad-src/common/linux/file_id.cc
