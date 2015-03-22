@@ -5,7 +5,12 @@ win32 {
     DEFINES+= _WIN
 } 
 
-QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
+win32-msvc* {
+    QMAKE_LFLAGS_RELEASE += /MAP
+    QMAKE_CFLAGS_RELEASE += /Zi
+    QMAKE_LFLAGS_RELEASE += /debug /opt:ref
+    QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,5.01
+}
 CONFIG += c++11
 
 DEFINES += NOT_RUBY EXPORT _UNICODE _CRT_SECURE_NO_WARNINGS
@@ -84,3 +89,5 @@ SOURCES += \
     bindings/java/java_callbacks.cpp \
     bindings/java/java_coding.cpp \
     bindings/java/java_control.cpp
+
+unix:QMAKE_CXXFLAGS+=-g
