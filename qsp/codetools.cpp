@@ -181,9 +181,9 @@ static int qspProcessEOLExtensions(QSPLineOfCode *s, int count,
       bufSize += 16;
       ret = (QSPLineOfCode *)realloc(ret, bufSize * sizeof(QSPLineOfCode));
     }
+    lastNum = s[i].LineNum;
     qspInitLineOfCode(ret + newCount - 1, str, lastNum);
     ++i;
-    lastNum = s[i].LineNum;
   }
   *strs = ret;
   return newCount;
