@@ -22,7 +22,7 @@ win32 {
 
 win32-msvc* {
     QMAKE_LFLAGS_RELEASE += /MAP
-    QMAKE_CFLAGS_RELEASE += /Zi
+    QMAKE_CFLAGS_RELEASE += /Zi /Zo
     QMAKE_LFLAGS_RELEASE += /debug /opt:ref
 }
 
