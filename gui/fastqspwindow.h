@@ -30,8 +30,8 @@
 #include <QTime>
 
 #if QT_VERSION < 0x050000
-#include <Phonon/MediaObject>
-#include <Phonon/AudioOutput>
+#include <phonon/MediaObject>
+#include <phonon/AudioOutput>
 #else
 #include <QMediaPlayer>
 #endif
